@@ -1,26 +1,8 @@
-import java.awt.EventQueue;
-import Activity.java;
-
-import javax.swing.JFrame;
-import javax.swing.JTextPane;
-import java.awt.BorderLayout;
 import javax.swing.JButton;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-
-import java.awt.Color;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
-import javax.swing.JTextField;
-import java.awt.GridBagLayout;
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
 import javax.swing.JLabel;
-import javax.swing.JEditorPane;
 
-import javax.swing.JPanel;
 
 public class List {
 	private String namaList;
@@ -90,7 +72,7 @@ public class List {
 		return this.height;
 	}
 	
-	public Activity outActivity(int index){
+	public void outActivity(int index){
 		activity[index] = null;
 		for(int i = index; i<currentIndex; i++) {
 			activity[i] = activity[i+1];
@@ -98,9 +80,10 @@ public class List {
 		}
 		activity[currentIndex] = null;
 		currentIndex--;
+		
 	}
 	
-	public Activity inActivity(Activity act){
+	public void inActivity(Activity act){
 		activity[currentIndex] = act;
 		currentIndex++;
 	}

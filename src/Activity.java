@@ -1,22 +1,4 @@
-import java.awt.EventQueue;
-import List.java;
-
-import javax.swing.JFrame;
-import javax.swing.JTextPane;
-import java.awt.BorderLayout;
-import javax.swing.JButton;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import javax.swing.JPanel;
-import java.awt.Color;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
 import javax.swing.JTextField;
-import java.awt.GridBagLayout;
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
-import javax.swing.JLabel;
-import javax.swing.JEditorPane;
 
 public class Activity {
 	private String content;
@@ -29,10 +11,11 @@ public class Activity {
 	
 	JTextField textField;
 	
-	public JTextField createActivity(String isi, int xPosisi, int yPosisi) {
+	public JTextField createActivity(String isi, int xPosisi, int yPosisi, List listen) {
 		this.content = isi;
 		this.x = xPosisi;
 		this.y = yPosisi;
+		this.parentList = listen;
 			
 		textField = new JTextField();
 		textField.setBounds(xPosisi, yPosisi, width, height);
@@ -82,5 +65,13 @@ public class Activity {
 	
 	public int getIndex() {
 		return this.myIndex;
+	}
+	
+	public void setParent(List listen) {
+		this.parentList = listen;
+	}
+	
+	public List getParent() {
+		return this.parentList;
 	}
 }
