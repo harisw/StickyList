@@ -7,8 +7,6 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-
 import java.awt.Color;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
@@ -19,44 +17,32 @@ import java.awt.Insets;
 import javax.swing.JLabel;
 import javax.swing.JEditorPane;
 
-import javax.swing.JPanel;
-
-public class List {
-	private String namaList;
+public class Activity {
+	private String content;
 	private int x;
 	private int y;
-	private int width = 70;
-	private int height = 100;
+	private int width = 50;
+	private int height = 20;
 	
-	JPanel panel;
-	JLabel label;
-	JButton button;
-	JScrollPane scroll;
+	JTextField textField;
 	
-	public JPanel createList(String nama, int xPosisi, int yPosisi) {
-		this.namaList = nama;
+	public JTextField createActivity(String isi, int xPosisi, int yPosisi) {
+		this.content = isi;
 		this.x = xPosisi;
 		this.y = yPosisi;
+			
+		textField = new JTextField();
+		textField.setBounds(xPosisi, yPosisi, width, height);
 		
-		scroll = new JScrollPane();
-		panel = new JPanel();
-		label = new JLabel(nama);
-		button = new JButton("Add Activity");
-		
-		panel.setBounds(xPosisi, yPosisi, width, height);
-		
-		panel.add(button);
-		panel.add(label);
-		panel.add(scroll);
-		return panel;
+		return textField;		
 	}
 	
-	public void setNamaList(String nama) {
-		this.namaList = nama;
+	public void setContent(String isi) {
+		this.content = isi;
 	}
 	
-	public String getNamaList() {
-		return this.namaList;
+	public String getContent() {
+		return this.content;
 	}
 	
 	public void setX(int x) {
@@ -73,6 +59,10 @@ public class List {
 	
 	public int getY() {
 		return this.y;
+	}
+	
+	public void setWidth(int width) {
+		this.width = width;
 	}
 	
 	public int getWidth() {
