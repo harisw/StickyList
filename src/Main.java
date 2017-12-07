@@ -15,6 +15,7 @@ import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import javax.swing.JLabel;
+import javax.swing.JEditorPane;
 
 public class Main {
 
@@ -22,9 +23,9 @@ public class Main {
 	private JPanel[] panel;
 	
 	private int flag;
-	private JTextField textField;
+	//private JTextField textField;
 	private JLabel lblTodoList;
-	private JButton button;
+	//private JButton button;
 
 	/**
 	 * Launch the application.
@@ -55,11 +56,14 @@ public class Main {
 	private void initialize() {
 		flag = 0;
 		frame = new JFrame();
-		frame.setBounds(100, 100, 567, 390);
+		frame.setBounds(100, 100, 800, 600);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
+		frame.setLocationRelativeTo(null);
 		
-		JButton btnNewList = new JButton("New List");
+		panel = new JPanel[5];
+		
+		JButton btnNewList = new JButton("New Activity");
 		btnNewList.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				lblTodoList.setVisible(true);
@@ -69,11 +73,9 @@ public class Main {
 		});
 		btnNewList.setBounds(43, 30, 100, 23);
 		frame.getContentPane().add(btnNewList);
-		
-		panel = new JPanel[5];
-		
+	
 		lblTodoList = new JLabel("To-Do List");
-		lblTodoList.setBounds(30, 64, 58, 14);
+		//lblTodoList.setBounds(30, 64, 58, 14);
 		//lblTodoList.setVisible(false);
 		
 		panel[0] = new JPanel();
@@ -101,7 +103,7 @@ public class Main {
 		frame.getContentPane().add(panel[3]);
 		panel[3].setVisible(false);
 		
-		JButton btnDelList = new JButton("Delete List");
+		JButton btnDelList = new JButton("Delete Activity");
 		btnDelList.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(flag>=0)
