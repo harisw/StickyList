@@ -1,19 +1,12 @@
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
-import javax.swing.JTextPane;
-import java.awt.BorderLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JPanel;
 import java.awt.Color;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
-import javax.swing.JTextField;
-import java.awt.GridBagLayout;
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
 import javax.swing.JLabel;
 
 public class Main {
@@ -22,9 +15,7 @@ public class Main {
 	private JPanel[] panel;
 	
 	private int flag;
-	private JTextField textField;
 	private JLabel lblTodoList;
-	private JButton button;
 
 	/**
 	 * Launch the application.
@@ -56,8 +47,10 @@ public class Main {
 		flag = 0;
 		frame = new JFrame();
 		frame.setBounds(100, 100, 567, 390);
+
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
+		frame.setIconImage(new ImageIcon(ClassLoader.getSystemResource("images/logo.png")).getImage());
 		
 		JButton btnNewList = new JButton("New List");
 		btnNewList.addActionListener(new ActionListener() {
