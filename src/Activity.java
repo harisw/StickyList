@@ -1,4 +1,5 @@
 import java.awt.EventQueue;
+import List.java;
 
 import javax.swing.JFrame;
 import javax.swing.JTextPane;
@@ -23,6 +24,8 @@ public class Activity {
 	private int y;
 	private int width = 50;
 	private int height = 20;
+	private List parentList;
+	private int myIndex;
 	
 	JTextField textField;
 	
@@ -61,10 +64,6 @@ public class Activity {
 		return this.y;
 	}
 	
-	public void setWidth(int width) {
-		this.width = width;
-	}
-	
 	public int getWidth() {
 		return this.width;
 	}
@@ -75,5 +74,13 @@ public class Activity {
 	
 	public int getHeight(int height) {
 		return this.height;
+	}
+	
+	public void setIndex(int index) {
+		this.myIndex = index;
+	}
+	
+	public int getIndex() {
+		return this.myIndex;
 	}
 }

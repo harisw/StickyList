@@ -1,4 +1,5 @@
 import java.awt.EventQueue;
+import Activity.java;
 
 import javax.swing.JFrame;
 import javax.swing.JTextPane;
@@ -27,6 +28,8 @@ public class List {
 	private int y;
 	private int width = 70;
 	private int height = 100;
+	private Activity[] activity;
+	private int currentIndex = 0;
 	
 	JPanel panel;
 	JLabel label;
@@ -85,5 +88,20 @@ public class List {
 	
 	public int getHeight(int height) {
 		return this.height;
+	}
+	
+	public Activity outActivity(int index){
+		activity[index] = null;
+		for(int i = index; i<currentIndex; i++) {
+			activity[i] = activity[i+1];
+			activity[i].setIndex(i);
+		}
+		activity[currentIndex] = null;
+		currentIndex--;
+	}
+	
+	public Activity inActivity(Activity act){
+		activity[currentIndex] = act;
+		currentIndex++;
 	}
 }
