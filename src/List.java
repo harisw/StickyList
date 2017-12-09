@@ -6,7 +6,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JLabel;
 
 
-public class List {
+public class List extends JPanel{
 	private String namaList;
 	private int x;
 	private int y;
@@ -15,7 +15,6 @@ public class List {
 	private Activity[] activity;
 	private int currentIndex = 0;
 	
-	public JPanel panel;
 	private JLabel label;
 	private JButton button;
 	private JScrollPane scroll;
@@ -24,16 +23,14 @@ public class List {
 		namaList = nama;
 		x = xPosisi;
 		y = yPosisi;
-		
-		panel = new JPanel();
+				
 		label = new JLabel(nama);
 		button = new JButton("Add Activity");
 		
-		panel.setBounds(xPosisi, yPosisi, width, height);
-		panel.setBackground(Color.WHITE);
-		panel.add(button);
-		panel.add(label);
-		panel.setVisible(true);
+		setBounds(xPosisi, yPosisi, width, height);
+		setBackground(Color.WHITE);
+		add(label);
+		add(button);
 		
 	}
 	

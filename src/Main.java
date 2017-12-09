@@ -54,10 +54,6 @@ public class Main {
 				btnConfirm.setVisible(true);
 				textField.requestFocus();
 				
-				pan = new JPanel();
-				pan.setBackground(Color.WHITE);
-				pan.setBounds(50,64,110,263);
-				frame.add(pan);
 			}
 		});
 		btnNewList.setBounds(43, 30, 100, 23);
@@ -80,9 +76,9 @@ public class Main {
 				list[flag] = new List();
 				String txt = textField.getText();
 				list[flag].setValue(txt, 30+(flag*130), 64);
-				frame.getContentPane().add(list[flag].panel);
-				list[flag].panel.revalidate();
-				list[flag].panel.repaint();
+				frame.getContentPane().add(list[flag]);
+				list[flag].revalidate();
+				list[flag].repaint();
 				
 				textField.setVisible(false);
 				btnConfirm.setVisible(false);
