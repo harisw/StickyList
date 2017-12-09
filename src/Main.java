@@ -1,23 +1,15 @@
-import java.awt.EventQueue;
-
-import javax.swing.JFrame;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-
-import java.awt.Color;
-import javax.swing.JLabel;
-
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*; 
 
 public class Main {
 
 	private JFrame frame;
+	private JPanel pan;
 	private JTextField textField;
 	private JButton btnNewList, btnDelList, btnConfirm;
-	private List[] list;
+	private List[] list = new List[5];
+	private int flag = -1;
 
 	/**
 	 * Launch the application.
@@ -49,6 +41,7 @@ public class Main {
 		frame = new JFrame();
 		
 		frame.setBounds(100, 100, 800, 600);
+		frame.setTitle("Sticky List");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		frame.setLocationRelativeTo(null);
@@ -60,6 +53,11 @@ public class Main {
 				textField.setVisible(true);
 				btnConfirm.setVisible(true);
 				textField.requestFocus();
+				
+				pan = new JPanel();
+				pan.setBackground(Color.WHITE);
+				pan.setBounds(50,64,110,263);
+				frame.add(pan);
 			}
 		});
 		btnNewList.setBounds(43, 30, 100, 23);
@@ -76,8 +74,20 @@ public class Main {
 		
 		btnConfirm = new JButton("Confirm");
 		btnConfirm.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+			public void actionPerformed(ActionEvent arg0) {
 				//add new list
+				flag++;
+				list[flag] = new List();
+				String txt = textField.getText();
+				list[flag].setValue(txt, 30+(flag*130), 64);
+				frame.getContentPane().add(list[flag].panel);
+				list[flag].panel.revalidate();
+				list[flag].panel.repaint();
+				
+				textField.setVisible(false);
+				btnConfirm.setVisible(false);
+				textField.setText("");
+				//frame.pack();
 			}
 		});
 		btnConfirm.setBounds(338, 30, 100, 23);

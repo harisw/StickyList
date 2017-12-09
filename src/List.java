@@ -1,3 +1,5 @@
+import java.awt.Color;
+
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -8,32 +10,31 @@ public class List {
 	private String namaList;
 	private int x;
 	private int y;
-	private int width = 70;
-	private int height = 100;
+	private int width = 100;
+	private int height = 200;
 	private Activity[] activity;
 	private int currentIndex = 0;
 	
-	JPanel panel;
-	JLabel label;
-	JButton button;
-	JScrollPane scroll;
+	public JPanel panel;
+	private JLabel label;
+	private JButton button;
+	private JScrollPane scroll;
 	
-	public JPanel createList(String nama, int xPosisi, int yPosisi) {
-		this.namaList = nama;
-		this.x = xPosisi;
-		this.y = yPosisi;
+	public void setValue(String nama, int xPosisi, int yPosisi) {
+		namaList = nama;
+		x = xPosisi;
+		y = yPosisi;
 		
-		scroll = new JScrollPane();
 		panel = new JPanel();
 		label = new JLabel(nama);
 		button = new JButton("Add Activity");
 		
 		panel.setBounds(xPosisi, yPosisi, width, height);
-		
+		panel.setBackground(Color.WHITE);
 		panel.add(button);
 		panel.add(label);
-		panel.add(scroll);
-		return panel;
+		panel.setVisible(true);
+		
 	}
 	
 	public void setNamaList(String nama) {
