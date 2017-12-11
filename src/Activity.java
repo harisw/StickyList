@@ -1,26 +1,26 @@
-import javax.swing.JTextField;
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*; 
 
 public class Activity {
 	private String content;
 	private int x;
 	private int y;
-	private int width = 50;
+	private int width = 80;
 	private int height = 20;
 	private List parentList;
 	private int myIndex;
 	
 	JTextField textField;
 	
-	public JTextField createActivity(String isi, int xPosisi, int yPosisi, List listen) {
+	public void setActivity(String isi, int xPosisi, int yPosisi, List listen) {
 		this.content = isi;
 		this.x = xPosisi;
 		this.y = yPosisi;
 		this.parentList = listen;
 			
-		textField = new JTextField();
 		textField.setBounds(xPosisi, yPosisi, width, height);
 		
-		return textField;		
 	}
 	
 	public void setContent(String isi) {

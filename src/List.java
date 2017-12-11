@@ -1,9 +1,6 @@
-import java.awt.Color;
-
-import javax.swing.JButton;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JLabel;
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*; 
 
 
 public class List extends JPanel{
@@ -12,25 +9,39 @@ public class List extends JPanel{
 	private int y;
 	private int width = 100;
 	private int height = 200;
-	private Activity[] activity;
+	private Activity[] activity = new Activity[5];
 	private int currentIndex = 0;
 	
 	private JLabel label;
 	private JButton button;
 	private JScrollPane scroll;
+	private JTextField[] set = new JTextField[5];
 	
-	public void setValue(String nama, int xPosisi, int yPosisi) {
+	public void setList(String nama, int xPosisi, int yPosisi) {
 		namaList = nama;
 		x = xPosisi;
 		y = yPosisi;
 				
 		label = new JLabel(nama);
 		button = new JButton("Add Activity");
+		button.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				set[currentIndex] = new JTextField();
+				set[currentIndex].setBounds(5,60+(currentIndex*25),90,20);
+				set[currentIndex].setColumns(8);
+				add(set[currentIndex]);
+				set[currentIndex].revalidate();
+				set[currentIndex].repaint();
+//				System.out.println(currentIndex);
+				currentIndex++;
+			}
+		});
 		
 		setBounds(xPosisi, yPosisi, width, height);
 		setBackground(Color.WHITE);
 		add(label);
 		add(button);
+		
 		
 	}
 	
