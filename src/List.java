@@ -26,13 +26,14 @@ public class List extends JPanel{
 		button = new JButton("Add Activity");
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				set[currentIndex] = new JTextField();
-				set[currentIndex].setBounds(5,60+(currentIndex*25),90,20);
-				set[currentIndex].setColumns(8);
-				add(set[currentIndex]);
-				set[currentIndex].revalidate();
-				set[currentIndex].repaint();
-//				System.out.println(currentIndex);
+				activity[currentIndex] = new Activity();
+				activity[currentIndex].setActivity("", 10, 60+(currentIndex*25), List.this);
+				activity[currentIndex].textField.setColumns(8);
+				add(activity[currentIndex].textField);
+				activity[currentIndex].textField.revalidate();
+				activity[currentIndex].textField.repaint();
+				//System.out.println(activity[currentIndex].getParent().namaList);
+				
 				currentIndex++;
 			}
 		});

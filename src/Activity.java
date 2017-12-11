@@ -11,7 +11,7 @@ public class Activity {
 	private List parentList;
 	private int myIndex;
 	
-	JTextField textField;
+	JTextField textField = new JTextField();
 	
 	public void setActivity(String isi, int xPosisi, int yPosisi, List listen) {
 		this.content = isi;
