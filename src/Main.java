@@ -63,6 +63,13 @@ public class Main {
 		btnDelList.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				//delete last list
+				if(flag>=0)
+				{
+					list[flag].setVisible(false);
+					list[flag] = null;
+					flag--;
+				}
+
 			}
 		});
 		btnDelList.setBounds(631, 30, 100, 23);
