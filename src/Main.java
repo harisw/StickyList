@@ -69,6 +69,7 @@ public class Main {
 		menuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				System.out.println("Quit Pressed");
+				System.exit(0);
 			}
 		});
 		menu.add(menuItem);
