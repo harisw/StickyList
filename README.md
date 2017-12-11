@@ -1,6 +1,6 @@
 # StickyList
 
-StickyList is one of the desktop app for windwos to help people being more productive
+StickyList is one of the desktop app for windows to help people being more productive
 
 ## Getting Started
 
@@ -38,7 +38,7 @@ Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c6
 
 ## Versioning
 
-We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags). 
+We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/harisw/StickyList/tags). 
 
 ## Authors
 
