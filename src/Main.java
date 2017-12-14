@@ -114,6 +114,7 @@ public class Main {
 		  UndoManager manager = new UndoManager();
 		  tc.getDocument().addUndoableEditListener(manager);
 		  tc.getActionMap().put("undo", new UndoAction(manager));
+		  tc.getActionMap().put("redo", new RedoAction(manager));
 		  InputMap imap = tc.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
 		  imap.put(KeyStroke.getKeyStroke(
 		    KeyEvent.VK_Z, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()), "undo");
@@ -137,4 +138,19 @@ public class Main {
 		  }
 		}
 		
+		private static class RedoAction extends AbstractAction {
+	        private final UndoManager undoManager;
+	        protected RedoAction(UndoManager manager) {
+	            super("redo");
+	            this.undoManager = manager;
+	        }
+	        @Override public void actionPerformed(ActionEvent e) {
+	            try {
+	                undoManager.redo();
+	            } catch (CannotRedoException ex) {
+	                //cre.printStackTrace();
+	                Toolkit.getDefaultToolkit().beep();
+	            }
+	        }
+	    }
 }
