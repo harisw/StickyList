@@ -4,6 +4,7 @@ import javax.swing.*;
 
 public class Main {
 
+	private JMenuBar menuBar;
 	private JFrame frame;
 	private JTextField textField;
 	private JButton btnNewList, btnDelList, btnConfirm, btnUndo, btnRedo, btnSave;
@@ -43,27 +44,77 @@ public class Main {
 	private void initialize() {
 		frame = new JFrame();
 		
-		frame.setBounds(100, 100, 800, 600);
+		frame.setSize(800, 600);
 		frame.setTitle("Sticky List");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		frame.setLocationRelativeTo(null);
 		frame.setIconImage(new ImageIcon(ClassLoader.getSystemResource("images/logo.png")).getImage());
 		
+		/*create menu bar*/
+		menuBar = new JMenuBar();
+		frame.setJMenuBar(menuBar);
+		
+		//file - exit
+		ImageIcon iconExit = new ImageIcon(ClassLoader.getSystemResource("images/exit.png"));
+		Image imageExit = iconExit.getImage();
+		Image newImgExit = imageExit.getScaledInstance(20, 20, java.awt.Image.SCALE_SMOOTH); 
+	    iconExit = new ImageIcon(newImgExit);
+		
+		JMenu file = new JMenu("File");
+		file.setMnemonic(KeyEvent.VK_F);
+		menuBar.add(file);
+		JMenuItem exit = new JMenuItem("Exit", iconExit);
+		exit.setMnemonic(KeyEvent.VK_E);
+		exit.setToolTipText("Exit application");
+		file.add(exit);
+		exit.addActionListener((ActionEvent event) -> {
+            System.exit(0);
+        });
+		
+		//edit - undo - redo
+		ImageIcon iconUndo = new ImageIcon(ClassLoader.getSystemResource("images/undo.png"));
+		Image imageUndo = iconUndo.getImage();
+		Image newImgUndo = imageUndo.getScaledInstance(20, 20, java.awt.Image.SCALE_SMOOTH); 
+	    iconUndo = new ImageIcon(newImgUndo);
+	    
+	    ImageIcon iconRedo = new ImageIcon(ClassLoader.getSystemResource("images/redo.png"));
+		Image imageRedo = iconRedo.getImage();
+		Image newImgRedo = imageRedo.getScaledInstance(20, 20, java.awt.Image.SCALE_SMOOTH); 
+	    iconRedo = new ImageIcon(newImgRedo);
+		
+		JMenu edit = new JMenu("Edit");
+		menuBar.add(edit);
+		JMenuItem undo = new JMenuItem("Undo", iconUndo);
+		JMenuItem redo = new JMenuItem("Redo", iconRedo);
+		edit.add(undo);
+		edit.add(redo);
+		
+		//help - about
+		ImageIcon iconAbout = new ImageIcon(ClassLoader.getSystemResource("images/logo.png"));
+		Image imageAbout = iconAbout.getImage();
+		Image newImgAbout = imageAbout.getScaledInstance(20, 20, java.awt.Image.SCALE_SMOOTH); 
+	    iconAbout = new ImageIcon(newImgAbout);
+	    
+		JMenu help = new JMenu("Help");
+		menuBar.add(help);
+		JMenuItem about = new JMenuItem("About", iconAbout);
+		help.add(about);
+		/*end of create menu bar*/
+		
 		textField = new JTextField();
 		textField.setBounds(164, 31, 164, 20);
 		frame.getContentPane().add(textField);
 		textField.setColumns(10);
-		
 		textField.setVisible(false);
 
+		/*button new list*/
 		btnNewList = new JButton("New List");
 		btnNewList.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				textField.setVisible(true);
 				btnConfirm.setVisible(true);
 				textField.requestFocus();
-				
 			}
 		});
 		btnNewList.setBounds(43, 30, 100, 23);
@@ -79,12 +130,12 @@ public class Main {
 					list[flag] = null;
 					flag--;
 				}
-
 			}
 		});
 		btnDelList.setBounds(640, 30, 100, 23);
 		frame.getContentPane().add(btnDelList);
 		
+		/*button confirm*/
 		btnConfirm = new JButton("Confirm");
 		btnConfirm.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -183,9 +234,9 @@ public class Main {
 						btnUndo.setEnabled(true);
 					} else {
 						// Don't allow user to click Redo
-						btnRedo.setEnabled(false);	
-					}	
-				}	
+						btnRedo.setEnabled(false);
+					}
+				}
 		}	
 	}
 }
