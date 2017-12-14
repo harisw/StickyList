@@ -1,20 +1,19 @@
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
-import javax.swing.text.JTextComponent;
-import javax.swing.undo.CannotRedoException;
-import javax.swing.undo.CannotUndoException;
-import javax.swing.undo.UndoManager; 
 
 public class Main {
 
 	private JFrame frame;
-	private JPanel pan;
 	private JTextField textField;
-	private JButton btnNewList, btnDelList, btnConfirm;
+	private JButton btnNewList, btnDelList, btnConfirm, btnUndo, btnRedo, btnSave;
 	private List[] list = new List[5];
 	private int flag = -1;
-
+	   
+   Caretaker caretaker = new Caretaker();
+   Originator originator = new Originator();
+   int saveFiles = 0, currentArticle = 0;
+      
 	/**
 	 * Launch the application.
 	 */
@@ -36,7 +35,6 @@ public class Main {
 	 */
 	public Main() {
 		initialize();
-		initUndoRedo(textField);
 	}
 
 	/**
@@ -52,6 +50,13 @@ public class Main {
 		frame.setLocationRelativeTo(null);
 		frame.setIconImage(new ImageIcon(ClassLoader.getSystemResource("images/logo.png")).getImage());
 		
+		textField = new JTextField();
+		textField.setBounds(164, 31, 164, 20);
+		frame.getContentPane().add(textField);
+		textField.setColumns(10);
+		
+		textField.setVisible(false);
+
 		btnNewList = new JButton("New List");
 		btnNewList.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -77,7 +82,7 @@ public class Main {
 
 			}
 		});
-		btnDelList.setBounds(631, 30, 100, 23);
+		btnDelList.setBounds(640, 30, 100, 23);
 		frame.getContentPane().add(btnDelList);
 		
 		btnConfirm = new JButton("Confirm");
@@ -100,57 +105,87 @@ public class Main {
 		});
 		btnConfirm.setBounds(338, 30, 100, 23);
 		frame.getContentPane().add(btnConfirm);
-		
-		textField = new JTextField();
-		textField.setBounds(164, 31, 164, 20);
-		frame.getContentPane().add(textField);
-		textField.setColumns(10);
-		
-		textField.setVisible(false);
 		btnConfirm.setVisible(false);
+		
+		ButtonListener saveListener = new ButtonListener();
+		ButtonListener undoListener = new ButtonListener();
+		ButtonListener redoListener = new ButtonListener();
+		
+		btnUndo = new JButton("Undo");
+		btnUndo.setBounds(500, 56, 100, 23);
+		frame.getContentPane().add(btnUndo);
+		btnUndo.setVisible(true);
+		btnUndo.addActionListener(undoListener);
+		
+		btnSave = new JButton("Save");
+		btnSave.setBounds(460, 30, 100, 23);
+		frame.getContentPane().add(btnSave);
+		btnSave.setVisible(true);
+		btnSave.addActionListener(saveListener);
+		
+		btnRedo = new JButton("Redo");
+		btnRedo.setBounds(600, 56, 100, 23);
+		frame.getContentPane().add(btnRedo);
+		btnRedo.setVisible(true);
+		btnRedo.addActionListener(redoListener);
 	}
 	
-	private static void initUndoRedo(JTextComponent tc) {
-		  UndoManager manager = new UndoManager();
-		  tc.getDocument().addUndoableEditListener(manager);
-		  tc.getActionMap().put("undo", new UndoAction(manager));
-		  tc.getActionMap().put("redo", new RedoAction(manager));
-		  InputMap imap = tc.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
-		  imap.put(KeyStroke.getKeyStroke(
-		    KeyEvent.VK_Z, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()), "undo");
-		  imap.put(KeyStroke.getKeyStroke(
-		    KeyEvent.VK_Y, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()), "redo");
-		}
-	
-		private static class UndoAction extends AbstractAction {
-		  private final UndoManager undoManager;
-		  public UndoAction(UndoManager manager) {
-		    super("undo");
-		    this.undoManager = manager;
-		  }
-		  @Override public void actionPerformed(ActionEvent e) {
-		    try {
-		      undoManager.undo();
-		    } catch (CannotUndoException cue) {
-		      //cue.printStackTrace();
-		      Toolkit.getDefaultToolkit().beep();
-		    }
-		  }
-		}
-		
-		private static class RedoAction extends AbstractAction {
-	        private final UndoManager undoManager;
-	        protected RedoAction(UndoManager manager) {
-	            super("redo");
-	            this.undoManager = manager;
-	        }
-	        @Override public void actionPerformed(ActionEvent e) {
-	            try {
-	                undoManager.redo();
-	            } catch (CannotRedoException ex) {
-	                //cre.printStackTrace();
-	                Toolkit.getDefaultToolkit().beep();
-	            }
-	        }
-	    }
+	class ButtonListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			if(e.getSource() == btnSave){
+				// Get text in JTextField
+				String textInTextArea = textField.getText();
+				
+				// Set the value for the current memento
+				originator.set(textInTextArea);
+				
+				// Add new article to the ArrayList
+				caretaker.addMemento( originator.storeInMemento() );
+				
+				// saveFiles monitors how many articles are saved
+				// currentArticle monitors the current article displayed
+				
+				saveFiles++;
+				currentArticle++;
+				
+				System.out.println("Save Files " + saveFiles);
+				// Make undo clickable
+				btnUndo.setEnabled(true);
+				
+			} else if(e.getSource() == btnUndo){
+				if(currentArticle >= 1){
+					
+					// Decrement to the current article displayed
+					currentArticle--;
+						
+					// Get the older article saved and display it in JTextArea
+					String textBoxString = originator.restoreFromMemento( caretaker.getMemento(currentArticle) );
+					textField.setText(textBoxString);
+						
+					// Make Redo clickable
+					btnRedo.setEnabled(true);
+				} else {
+					// Don't allow user to click Undo						
+					btnUndo.setEnabled(false);
+				}
+				
+				} else if(e.getSource() == btnRedo){
+					if((saveFiles - 1) > currentArticle){
+						
+						// Increment to the current article displayed
+						currentArticle++;
+						
+						// Get the newer article saved and display it in JTextArea
+						String textBoxString = originator.restoreFromMemento( caretaker.getMemento(currentArticle) );			
+						textField.setText(textBoxString);
+					
+						// Make undo clickable
+						btnUndo.setEnabled(true);
+					} else {
+						// Don't allow user to click Redo
+						btnRedo.setEnabled(false);	
+					}	
+				}	
+		}	
+	}
 }
