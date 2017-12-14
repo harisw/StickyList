@@ -1,6 +1,10 @@
 import java.awt.*;
 import java.awt.event.*;
-import javax.swing.*; 
+import javax.swing.*;
+import javax.swing.text.JTextComponent;
+import javax.swing.undo.CannotRedoException;
+import javax.swing.undo.CannotUndoException;
+import javax.swing.undo.UndoManager; 
 
 public class Main {
 
@@ -32,6 +36,7 @@ public class Main {
 	 */
 	public Main() {
 		initialize();
+		initUndoRedo(textField);
 	}
 
 	/**
@@ -104,4 +109,32 @@ public class Main {
 		textField.setVisible(false);
 		btnConfirm.setVisible(false);
 	}
+	
+	private static void initUndoRedo(JTextComponent tc) {
+		  UndoManager manager = new UndoManager();
+		  tc.getDocument().addUndoableEditListener(manager);
+		  tc.getActionMap().put("undo", new UndoAction(manager));
+		  InputMap imap = tc.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+		  imap.put(KeyStroke.getKeyStroke(
+		    KeyEvent.VK_Z, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()), "undo");
+		  imap.put(KeyStroke.getKeyStroke(
+		    KeyEvent.VK_Y, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()), "redo");
+		}
+	
+		private static class UndoAction extends AbstractAction {
+		  private final UndoManager undoManager;
+		  public UndoAction(UndoManager manager) {
+		    super("undo");
+		    this.undoManager = manager;
+		  }
+		  @Override public void actionPerformed(ActionEvent e) {
+		    try {
+		      undoManager.undo();
+		    } catch (CannotUndoException cue) {
+		      //cue.printStackTrace();
+		      Toolkit.getDefaultToolkit().beep();
+		    }
+		  }
+		}
+		
 }
