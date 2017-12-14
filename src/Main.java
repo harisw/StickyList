@@ -43,6 +43,7 @@ public class Main {
 	 */
 	private void initialize() {
 		frame = new JFrame();
+		frame.getContentPane().setBackground(new Color(153, 204, 153));
 		
 		frame.setSize(800, 600);
 		frame.setTitle("Sticky List");
@@ -50,6 +51,7 @@ public class Main {
 		frame.getContentPane().setLayout(null);
 		frame.setLocationRelativeTo(null);
 		frame.setIconImage(new ImageIcon(ClassLoader.getSystemResource("images/logo.png")).getImage());
+		//frame.setLayout(new BorderLayout());
 		
 		/*create menu bar*/
 		menuBar = new JMenuBar();
@@ -102,25 +104,66 @@ public class Main {
 		help.add(about);
 		/*end of create menu bar*/
 		
-		textField = new JTextField();
-		textField.setBounds(164, 31, 164, 20);
-		frame.getContentPane().add(textField);
-		textField.setColumns(10);
-		textField.setVisible(false);
+		JPanel firstPanel = new JPanel();
+		firstPanel.setLayout(new GridLayout(4, 4));
+		firstPanel.setMaximumSize(new Dimension(400, 400));
+		JButton btn;
+		for (int i=1; i<=4; i++) {
+		    for (int j=1; j<=4; j++) {
+		        btn = new JButton();
+		        btn.setPreferredSize(new Dimension(100, 100));
+		        firstPanel.add(btn);
+		    }
+		}
 
 		/*button new list*/
+		
+		/*button confirm*/
+		
+		ButtonListener saveListener = new ButtonListener();
+		ButtonListener undoListener = new ButtonListener();
+		ButtonListener redoListener = new ButtonListener();
+		
+		JPanel panel = new JPanel();
+		panel.setBackground(new Color(102, 153, 153));
+		panel.setBounds(0, 0, 138, 43);
+		frame.getContentPane().add(panel);
 		btnNewList = new JButton("New List");
-		btnNewList.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				textField.setVisible(true);
-				btnConfirm.setVisible(true);
-				textField.requestFocus();
-			}
-		});
-		btnNewList.setBounds(43, 30, 100, 23);
-		frame.getContentPane().add(btnNewList);
+		panel.add(btnNewList);
+		
+		JPanel panel_1 = new JPanel();
+		panel_1.setBackground(new Color(102, 153, 153));
+		panel_1.setBounds(129, 0, 213, 43);
+		frame.getContentPane().add(panel_1);
+		
+		textField = new JTextField();
+		panel_1.add(textField);
+		textField.setColumns(10);
+		btnConfirm = new JButton("Confirm");
+		panel_1.add(btnConfirm);
+		
+		JPanel panel_2 = new JPanel();
+		panel_2.setBackground(new Color(102, 153, 153));
+		panel_2.setBounds(333, 0, 451, 43);
+		frame.getContentPane().add(panel_2);
 		
 		btnDelList = new JButton("Delete List");
+		panel_2.add(btnDelList);
+		
+		btnSave = new JButton("Save");
+		panel_2.add(btnSave);
+		
+		btnRedo = new JButton("Redo");
+		panel_2.add(btnRedo);
+		
+		btnUndo = new JButton("Undo");
+		panel_2.add(btnUndo);
+		btnUndo.setVisible(true);
+		btnUndo.addActionListener(undoListener);
+		btnRedo.setVisible(true);
+		btnRedo.addActionListener(redoListener);
+		btnSave.setVisible(true);
+		btnSave.addActionListener(saveListener);
 		btnDelList.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				//delete last list
@@ -132,11 +175,6 @@ public class Main {
 				}
 			}
 		});
-		btnDelList.setBounds(640, 30, 100, 23);
-		frame.getContentPane().add(btnDelList);
-		
-		/*button confirm*/
-		btnConfirm = new JButton("Confirm");
 		btnConfirm.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				//add new list
@@ -154,31 +192,15 @@ public class Main {
 				//frame.pack();
 			}
 		});
-		btnConfirm.setBounds(338, 30, 100, 23);
-		frame.getContentPane().add(btnConfirm);
 		btnConfirm.setVisible(false);
-		
-		ButtonListener saveListener = new ButtonListener();
-		ButtonListener undoListener = new ButtonListener();
-		ButtonListener redoListener = new ButtonListener();
-		
-		btnUndo = new JButton("Undo");
-		btnUndo.setBounds(500, 56, 100, 23);
-		frame.getContentPane().add(btnUndo);
-		btnUndo.setVisible(true);
-		btnUndo.addActionListener(undoListener);
-		
-		btnSave = new JButton("Save");
-		btnSave.setBounds(460, 30, 100, 23);
-		frame.getContentPane().add(btnSave);
-		btnSave.setVisible(true);
-		btnSave.addActionListener(saveListener);
-		
-		btnRedo = new JButton("Redo");
-		btnRedo.setBounds(600, 56, 100, 23);
-		frame.getContentPane().add(btnRedo);
-		btnRedo.setVisible(true);
-		btnRedo.addActionListener(redoListener);
+		textField.setVisible(false);
+		btnNewList.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				textField.setVisible(true);
+				btnConfirm.setVisible(true);
+				textField.requestFocus();
+			}
+		});
 	}
 	
 	class ButtonListener implements ActionListener {
