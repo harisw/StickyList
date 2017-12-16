@@ -2,20 +2,19 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*; 
 
-
 public class List extends JPanel{
 	private String namaList;
 	private int x;
 	private int y;
 	private int width = 100;
 	private int height = 200;
-	private Activity[] activity = new Activity[5];
+	private Activity[] child = new Activity[5];
 	private int currentIndex = 0;
 	
 	private JLabel label;
 	private JButton button;
-	private JScrollPane scroll;
-	private JTextField[] set = new JTextField[5];
+	//private JScrollPane scroll;
+	//private JTextField[] set = new JTextField[5];
 	
 	public void setList(String nama, int xPosisi, int yPosisi) {
 		namaList = nama;
@@ -26,12 +25,12 @@ public class List extends JPanel{
 		button = new JButton("Add Activity");
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				activity[currentIndex] = new Activity();
-				activity[currentIndex].setActivity("", 10, 60+(currentIndex*25), List.this);
-				activity[currentIndex].textField.setColumns(8);
-				add(activity[currentIndex].textField);
-				activity[currentIndex].textField.revalidate();
-				activity[currentIndex].textField.repaint();
+				child[currentIndex] = new Activity();
+				child[currentIndex].setActivity("", 10, 60+(currentIndex*25), List.this);
+				child[currentIndex].textField.setColumns(8);
+				add(child[currentIndex].textField);
+				child[currentIndex].textField.revalidate();
+				child[currentIndex].textField.repaint();
 				//System.out.println(activity[currentIndex].getParent().namaList);
 				
 				currentIndex++;
@@ -83,18 +82,18 @@ public class List extends JPanel{
 	}
 	
 	public void outActivity(int index){
-		activity[index] = null;
+		child[index] = null;
 		for(int i = index; i<currentIndex; i++) {
-			activity[i] = activity[i+1];
-			activity[i].setIndex(i);
+			child[i] = child[i+1];
+			child[i].setIndex(i);
 		}
-		activity[currentIndex] = null;
+		child[currentIndex] = null;
 		currentIndex--;
 		
 	}
 	
 	public void inActivity(Activity act){
-		activity[currentIndex] = act;
+		child[currentIndex] = act;
 		currentIndex++;
 	}
 }
