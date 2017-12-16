@@ -25,15 +25,11 @@ public class List extends JPanel{
 		button = new JButton("Add Activity");
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				child[currentIndex] = new Activity();
-				child[currentIndex].setActivity("", 10, 60+(currentIndex*25), List.this);
-				child[currentIndex].textField.setColumns(8);
-				add(child[currentIndex].textField);
-				child[currentIndex].textField.revalidate();
-				child[currentIndex].textField.repaint();
+				Activity act = new Activity();
+				act.setActivity("", 10, 60+(currentIndex*25), List.this);
+				act.textField.setColumns(8);
+				inActivity(act);
 				//System.out.println(activity[currentIndex].getParent().namaList);
-				
-				currentIndex++;
 			}
 		});
 		
@@ -94,6 +90,9 @@ public class List extends JPanel{
 	
 	public void inActivity(Activity act){
 		child[currentIndex] = act;
+		add(child[currentIndex].textField);
+		child[currentIndex].textField.revalidate();
+		child[currentIndex].textField.repaint();
 		currentIndex++;
 	}
 }
