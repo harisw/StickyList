@@ -144,6 +144,10 @@ public class Main {
 		
 		btnUndo = new JButton("Undo");
 		panel_2.add(btnUndo);
+		
+		ScrollPane scrollPane = new ScrollPane();
+		scrollPane.setBounds(129, 71, 100, 100);
+		frame.getContentPane().add(scrollPane);
 		btnUndo.setVisible(true);
 		btnUndo.addActionListener(undoListener);
 		btnRedo.setVisible(true);

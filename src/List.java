@@ -37,8 +37,6 @@ public class List extends JPanel{
 		setBackground(Color.WHITE);
 		add(label);
 		add(button);
-		
-		
 	}
 	
 	public void setNamaList(String nama) {
