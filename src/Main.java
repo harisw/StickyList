@@ -10,7 +10,8 @@ public class Main {
 	private JButton btnNewList, btnDelList, btnConfirm, btnUndo, btnRedo, btnSave;
 	private List[] list = new List[5];
 	private int flag = -1;
-	   
+	private int oldChar = 0;
+	private int newChar;
    Caretaker caretaker = new Caretaker();
    Originator originator = new Originator();
    int saveFiles = 0, currentArticle = 0;
@@ -104,12 +105,6 @@ public class Main {
 		help.add(about);
 		/*end of create menu bar*/
 		
-		/*button confirm button new list*/
-		
-		ButtonListener saveListener = new ButtonListener();
-		ButtonListener undoListener = new ButtonListener();
-		ButtonListener redoListener = new ButtonListener();
-		
 		JPanel panel = new JPanel();
 		panel.setBackground(new Color(102, 153, 153));
 		panel.setBounds(0, 0, 138, 43);
@@ -144,53 +139,33 @@ public class Main {
 		
 		btnUndo = new JButton("Undo");
 		panel_2.add(btnUndo);
+		
+		/*button confirm button new list*/
+		
+		ButtonListener saveListener = new ButtonListener();
+		ButtonListener undoListener = new ButtonListener();
+		ButtonListener redoListener = new ButtonListener();
+		ButtonListener newListener = new ButtonListener();
+		ButtonListener delListener = new ButtonListener();
+		ButtonListener confListener = new ButtonListener();
+		
 		btnUndo.setVisible(true);
 		btnUndo.addActionListener(undoListener);
 		btnRedo.setVisible(true);
 		btnRedo.addActionListener(redoListener);
 		btnSave.setVisible(true);
 		btnSave.addActionListener(saveListener);
-		btnDelList.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				//delete last list
-				if(flag>=0)
-				{
-					list[flag].setVisible(false);
-					list[flag] = null;
-					flag--;
-				}
-			}
-		});
-		btnConfirm.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				//add new list
-				flag++;
-				list[flag] = new List();
-				String txt = textField.getText();
-				list[flag].setList(txt, 30+(flag*130), 64);
-				frame.getContentPane().add(list[flag]);
-				list[flag].revalidate();
-				list[flag].repaint();
-				
-				textField.setVisible(false);
-				btnConfirm.setVisible(false);
-				textField.setText("");
-				//frame.pack();
-			}
-		});
+		btnDelList.addActionListener(delListener);
+		btnNewList.addActionListener(newListener);
+		btnConfirm.addActionListener(confListener);
+		
 		btnConfirm.setVisible(false);
 		textField.setVisible(false);
-		btnNewList.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				textField.setVisible(true);
-				btnConfirm.setVisible(true);
-				textField.requestFocus();
-			}
-		});
 	}
 	
 	class ButtonListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
+			System.out.println("Button pressed is " +e);
 			if(e.getSource() == btnSave){
 				// Get text in JTextField
 				String textInTextArea = textField.getText();
@@ -228,7 +203,7 @@ public class Main {
 					btnUndo.setEnabled(false);
 				}
 				
-				} else if(e.getSource() == btnRedo){
+			} else if(e.getSource() == btnRedo){
 					if((saveFiles - 1) > currentArticle){
 						
 						// Increment to the current article displayed
@@ -244,7 +219,34 @@ public class Main {
 						// Don't allow user to click Redo
 						btnRedo.setEnabled(false);
 					}
-				}
+			} else if(e.getSource() == btnDelList){
+				//delete last list
+				if(flag>=0)
+				{
+					list[flag].setVisible(false);
+					list[flag] = null;
+					flag--;
+				}	
+			} else if(e.getSource() == btnConfirm){
+				//add new list
+				flag++;
+				list[flag] = new List();
+				String txt = textField.getText();
+				list[flag].setList(txt, 30+(flag*130), 64);
+				frame.getContentPane().add(list[flag]);
+				list[flag].revalidate();
+				list[flag].repaint();
+				
+				textField.setVisible(false);
+				btnConfirm.setVisible(false);
+				textField.setText("");
+				//frame.pack();	
+			} else if(e.getSource() == btnNewList){
+				System.out.println("masuk");
+				textField.setVisible(true);
+				btnConfirm.setVisible(true);
+				textField.requestFocus();	
+			}	
 		}	
 	}
 }
