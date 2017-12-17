@@ -10,8 +10,8 @@ public class Main {
 	private JButton btnNewList, btnDelList, btnConfirm, btnUndo, btnRedo, btnSave;
 	private List[] list = new List[5];
 	private int flag = -1;
-	private int oldChar = 0;
-	private int newChar;
+	private int confirmCount = 0;
+	private int newConfirmCount;
    Caretaker caretaker = new Caretaker();
    Originator originator = new Originator();
    int saveFiles = 0, currentArticle = 0;
@@ -120,6 +120,34 @@ public class Main {
 		textField = new JTextField();
 		panel_1.add(textField);
 		textField.setColumns(10);
+		textField.addKeyListener(new KeyAdapter() {
+			public void keyReleased(KeyEvent e) {
+				JTextField aTextField = (JTextField)e.getSource();
+				String word = aTextField.getText();
+				int charCount = word.length();
+				if(Math.abs((confirmCount - charCount)) >= 3) {
+					confirmCount = charCount;
+					// Set the value for the current memento
+					originator.set(word);
+					
+					// Add new article to the ArrayList
+					caretaker.addMemento( originator.storeInMemento() );
+					
+					// saveFiles monitors how many articles are saved
+					// currentArticle monitors the current article displayed
+					
+					saveFiles++;
+					currentArticle++;
+					
+					System.out.println("Save Files " + saveFiles);
+					// Make undo clickable
+					btnUndo.setEnabled(true);
+				}
+				System.out.println("Char Entered: " + charCount);
+			}
+		});
+		
+		
 		btnConfirm = new JButton("Confirm");
 		panel_1.add(btnConfirm);
 		
