@@ -10,7 +10,8 @@ public class Main {
 	private JButton btnNewList, btnDelList, btnConfirm, btnUndo, btnRedo, btnSave;
 	private List[] list = new List[5];
 	private int flag = -1;
-	   
+	private int confirmCount = 0;
+	private int newConfirmCount;
    Caretaker caretaker = new Caretaker();
    Originator originator = new Originator();
    int saveFiles = 0, currentArticle = 0;
@@ -104,12 +105,6 @@ public class Main {
 		help.add(about);
 		/*end of create menu bar*/
 		
-		/*button confirm button new list*/
-		
-		ButtonListener saveListener = new ButtonListener();
-		ButtonListener undoListener = new ButtonListener();
-		ButtonListener redoListener = new ButtonListener();
-		
 		JPanel panel = new JPanel();
 		panel.setBackground(new Color(102, 153, 153));
 		panel.setBounds(0, 0, 138, 43);
@@ -125,6 +120,34 @@ public class Main {
 		textField = new JTextField();
 		panel_1.add(textField);
 		textField.setColumns(10);
+		textField.addKeyListener(new KeyAdapter() {
+			public void keyReleased(KeyEvent e) {
+				JTextField aTextField = (JTextField)e.getSource();
+				String word = aTextField.getText();
+				int charCount = word.length();
+				if(Math.abs((confirmCount - charCount)) >= 3) {
+					confirmCount = charCount;
+					// Set the value for the current memento
+					originator.set(word);
+					
+					// Add new article to the ArrayList
+					caretaker.addMemento( originator.storeInMemento() );
+					
+					// saveFiles monitors how many articles are saved
+					// currentArticle monitors the current article displayed
+					
+					saveFiles++;
+					currentArticle++;
+					
+					System.out.println("Save Files " + saveFiles);
+					// Make undo clickable
+					btnUndo.setEnabled(true);
+				}
+				System.out.println("Char Entered: " + charCount);
+			}
+		});
+		
+		
 		btnConfirm = new JButton("Confirm");
 		panel_1.add(btnConfirm);
 		
@@ -148,53 +171,33 @@ public class Main {
 		ScrollPane scrollPane = new ScrollPane();
 		scrollPane.setBounds(129, 71, 100, 100);
 		frame.getContentPane().add(scrollPane);
+
+		/*button confirm button new list*/
+		
+		ButtonListener saveListener = new ButtonListener();
+		ButtonListener undoListener = new ButtonListener();
+		ButtonListener redoListener = new ButtonListener();
+		ButtonListener newListener = new ButtonListener();
+		ButtonListener delListener = new ButtonListener();
+		ButtonListener confListener = new ButtonListener();
+		
 		btnUndo.setVisible(true);
 		btnUndo.addActionListener(undoListener);
 		btnRedo.setVisible(true);
 		btnRedo.addActionListener(redoListener);
 		btnSave.setVisible(true);
 		btnSave.addActionListener(saveListener);
-		btnDelList.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				//delete last list
-				if(flag>=0)
-				{
-					list[flag].setVisible(false);
-					list[flag] = null;
-					flag--;
-				}
-			}
-		});
-		btnConfirm.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				//add new list
-				flag++;
-				list[flag] = new List();
-				String txt = textField.getText();
-				list[flag].setList(txt, 30+(flag*130), 64);
-				frame.getContentPane().add(list[flag]);
-				list[flag].revalidate();
-				list[flag].repaint();
-				
-				textField.setVisible(false);
-				btnConfirm.setVisible(false);
-				textField.setText("");
-				//frame.pack();
-			}
-		});
+		btnDelList.addActionListener(delListener);
+		btnNewList.addActionListener(newListener);
+		btnConfirm.addActionListener(confListener);
+		
 		btnConfirm.setVisible(false);
 		textField.setVisible(false);
-		btnNewList.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				textField.setVisible(true);
-				btnConfirm.setVisible(true);
-				textField.requestFocus();
-			}
-		});
 	}
 	
 	class ButtonListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
+			System.out.println("Button pressed is " +e);
 			if(e.getSource() == btnSave){
 				// Get text in JTextField
 				String textInTextArea = textField.getText();
@@ -232,7 +235,7 @@ public class Main {
 					btnUndo.setEnabled(false);
 				}
 				
-				} else if(e.getSource() == btnRedo){
+			} else if(e.getSource() == btnRedo){
 					if((saveFiles - 1) > currentArticle){
 						
 						// Increment to the current article displayed
@@ -248,7 +251,34 @@ public class Main {
 						// Don't allow user to click Redo
 						btnRedo.setEnabled(false);
 					}
-				}
+			} else if(e.getSource() == btnDelList){
+				//delete last list
+				if(flag>=0)
+				{
+					list[flag].setVisible(false);
+					list[flag] = null;
+					flag--;
+				}	
+			} else if(e.getSource() == btnConfirm){
+				//add new list
+				flag++;
+				list[flag] = new List();
+				String txt = textField.getText();
+				list[flag].setList(txt, 30+(flag*130), 64);
+				frame.getContentPane().add(list[flag]);
+				list[flag].revalidate();
+				list[flag].repaint();
+				
+				textField.setVisible(false);
+				btnConfirm.setVisible(false);
+				textField.setText("");
+				//frame.pack();	
+			} else if(e.getSource() == btnNewList){
+				System.out.println("masuk");
+				textField.setVisible(true);
+				btnConfirm.setVisible(true);
+				textField.requestFocus();	
+			}	
 		}	
 	}
 }
