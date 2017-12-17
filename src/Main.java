@@ -104,21 +104,7 @@ public class Main {
 		help.add(about);
 		/*end of create menu bar*/
 		
-		JPanel firstPanel = new JPanel();
-		firstPanel.setLayout(new GridLayout(4, 4));
-		firstPanel.setMaximumSize(new Dimension(400, 400));
-		JButton btn;
-		for (int i=1; i<=4; i++) {
-		    for (int j=1; j<=4; j++) {
-		        btn = new JButton();
-		        btn.setPreferredSize(new Dimension(100, 100));
-		        firstPanel.add(btn);
-		    }
-		}
-
-		/*button new list*/
-		
-		/*button confirm*/
+		/*button confirm button new list*/
 		
 		ButtonListener saveListener = new ButtonListener();
 		ButtonListener undoListener = new ButtonListener();
