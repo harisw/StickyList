@@ -26,8 +26,6 @@ public class List extends JPanel{
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				Activity act = new Activity();
-				act.setActivity("", 10, 120+(currentIndex*40), List.this);
-				act.textField.setColumns(10);
 				inActivity(act);
 				//System.out.println(activity[currentIndex].getParent().namaList);
 			}
@@ -42,19 +40,35 @@ public class List extends JPanel{
 				System.out.println("i");
 			}
 			public void mouseReleased(MouseEvent e) {
+//				//System.out.println(List.this);
+//				Point p = ((Component) e.getSource()).getLocation();
+//			    e.translatePoint((int) p.getX(), (int) p.getY());
+//				setLocation(e.getX(), e.getY());
+//				setX(e.getX());
+//				setY(e.getY());
+//			    //list[flag].setVisible(false);
+//			    //Main.repaintComponents(e.getX(), e.getY());
+//			   
+//				System.out.println("ahah");
+			}
+			public void mouseDragged(MouseEvent e) {
+				System.out.println("man");
+			}
+		});
+		
+		addMouseMotionListener(new MouseMotionAdapter() {
+			@Override
+			public void mouseDragged(MouseEvent e) {
 				//System.out.println(List.this);
 				Point p = ((Component) e.getSource()).getLocation();
 			    e.translatePoint((int) p.getX(), (int) p.getY());
-				setLocation(e.getX(), e.getY());
+				setLocation(e.getX(), 64);
 				setX(e.getX());
-				setY(e.getY());
+				setY(64);
 			    //list[flag].setVisible(false);
 			    //Main.repaintComponents(e.getX(), e.getY());
 			   
 				System.out.println("ahah");
-			}
-			public void mouseDragged(MouseEvent e) {
-				System.out.println("man");
 			}
 		});
 		
@@ -105,17 +119,20 @@ public class List extends JPanel{
 	
 	public void outActivity(int index){
 		currentIndex--;
-		child[index] = null;
+		//child[index] = null;
+		remove(child[index]);
 		for(int i = index; i<currentIndex; i++) {
 			child[i] = child[i+1];
 			child[i].setIndex(i);
+			child[i].setActivity("", 10, 80+(i*30), null);
+			child[i].repaint();
 		}
 		child[currentIndex] = null;
 	}
 	
 	public void inActivity(Activity act){
 		child[currentIndex] = act;
-		act.setActivity("", 10, 80+(currentIndex*30), List.this);
+		act.setActivity("", 10, 80+(currentIndex*30), List.this);		
 		act.setIndex(currentIndex);
 		add(child[currentIndex]);
 		child[currentIndex].revalidate();
