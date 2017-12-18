@@ -113,9 +113,9 @@ public class List extends JPanel{
 	
 	public void inActivity(Activity act){
 		child[currentIndex] = act;
-		add(child[currentIndex].textField);
-		child[currentIndex].textField.revalidate();
-		child[currentIndex].textField.repaint();
+		add(child[currentIndex].panel);
+		child[currentIndex].panel.revalidate();
+		child[currentIndex].panel.repaint();
 		currentIndex++;
 	}
 }

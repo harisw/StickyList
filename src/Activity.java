@@ -1,3 +1,5 @@
+import java.awt.*;
+import java.awt.event.*;
 import javax.swing.*; 
 
 public class Activity {
@@ -9,6 +11,7 @@ public class Activity {
 	private List parentList;
 	private int myIndex;
 	
+	JPanel panel = new JPanel();
 	JTextField textField = new JTextField();
 	
 	public void setActivity(String isi, int xPosisi, int yPosisi, List listen) {
@@ -16,9 +19,34 @@ public class Activity {
 		this.x = xPosisi;
 		this.y = yPosisi;
 		this.parentList = listen;
+		
+		panel.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				System.out.println("yo");
+			}
+			public void mousePressed(MouseEvent e) {
+				System.out.println("i");
+			}
+			public void mouseReleased(MouseEvent e) {
+				//System.out.println(List.this);
+				Point p = ((Component) e.getSource()).getLocation();
+			    e.translatePoint((int) p.getX(), (int) p.getY());
+				panel.setLocation(e.getX(), e.getY());
+				setX(e.getX());
+				setY(e.getY());
+			    //list[flag].setVisible(false);
+			    //Main.repaintComponents(e.getX(), e.getY());
+			   
+				System.out.println("syip");
+			}
+			public void mouseDragged(MouseEvent e) {
+				System.out.println("man");
+			}
+		});
 			
 		textField.setBounds(xPosisi, yPosisi, width, height);
-		
+		panel.add(textField);
 	}
 	
 	public void setContent(String isi) {
