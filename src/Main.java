@@ -16,6 +16,7 @@ public class Main {
 	private int currentId = 1;
 	private int flag = -1;
 	private int confirmCount = 0;
+	private boolean flagSave = false;
 	Caretaker caretaker = new Caretaker();
 	Originator originator = new Originator();
 	int saveFiles = 0, currentArticle = 0;
@@ -74,17 +75,23 @@ public class Main {
 		JMenuItem saveWorkspace = new JMenuItem("Save WorkSpace");
 		file.add(saveWorkspace);
 		saveWorkspace.addActionListener((ActionEvent event) -> {
+			if(flagSave)
+			{
+				ListModel.deleteAll();
+			}
 			for(List l: list)
 			{
 				ListModel.insert(l);
 //				l.saveChild();
 			}
+			flagSave = true;
 		});
 		saveWorkspace.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK));
 		
 		JMenuItem loadWorkSpace = new JMenuItem("Load WorkSpace");
 		file.add(loadWorkSpace);
 		loadWorkSpace.addActionListener((ActionEvent event) -> {
+			clearWorkspace();
 			List[] loadedList = ListModel.getAll();
 			System.out.println(loadedList.length);
 			for(List l: loadedList)
@@ -228,6 +235,13 @@ public class Main {
 		textField.setVisible(false);
 	}
 	
+	private void clearWorkspace() {
+		while(flag > -1){
+			list[flag].setVisible(false);
+			list[flag] = null;
+			flag--;
+		}
+	}
 	class ButtonListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			System.out.println("Button pressed is " +e);
@@ -316,6 +330,6 @@ public class Main {
 				btnConfirm.setVisible(true);
 				textField.requestFocus();
 			}	
-		}	
+		}
 	}
 }
