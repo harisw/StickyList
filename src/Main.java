@@ -12,9 +12,9 @@ public class Main {
 	private int flag = -1;
 	private int confirmCount = 0;
 	private int newConfirmCount;
-   Caretaker caretaker = new Caretaker();
-   Originator originator = new Originator();
-   int saveFiles = 0, currentArticle = 0;
+	Caretaker caretaker = new Caretaker();
+	Originator originator = new Originator();
+	int saveFiles = 0, currentArticle = 0;
       
 	/**
 	 * Launch the application.
@@ -125,7 +125,7 @@ public class Main {
 				JTextField aTextField = (JTextField)e.getSource();
 				String word = aTextField.getText();
 				int charCount = word.length();
-				if(Math.abs((confirmCount - charCount)) >= 3) {
+				if(Math.abs((confirmCount - charCount)) >= 1) {
 					confirmCount = charCount;
 					// Set the value for the current memento
 					originator.set(word);
@@ -167,10 +167,6 @@ public class Main {
 		
 		btnUndo = new JButton("Undo");
 		panel_2.add(btnUndo);
-		
-		ScrollPane scrollPane = new ScrollPane();
-		scrollPane.setBounds(129, 71, 100, 100);
-		frame.getContentPane().add(scrollPane);
 
 		/*button confirm button new list*/
 		
@@ -261,7 +257,9 @@ public class Main {
 				}	
 			} else if(e.getSource() == btnConfirm){
 				//add new list
+				System.out.println("masuk btn confirm");
 				flag++;
+				System.out.println("ini flag" + flag);
 				list[flag] = new List();
 				String txt = textField.getText();
 				list[flag].setList(txt, 30+(flag*130), 64);
@@ -277,7 +275,7 @@ public class Main {
 				System.out.println("masuk");
 				textField.setVisible(true);
 				btnConfirm.setVisible(true);
-				textField.requestFocus();	
+				textField.requestFocus();
 			}	
 		}	
 	}
