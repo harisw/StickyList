@@ -2,16 +2,15 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*; 
 
-public class Activity {
+public class Activity extends JPanel{
 	private String content;
 	private int x;
 	private int y;
-	private int width = 80;
-	private int height = 20;
+	private int width = 182;
+	private int height = 25;
 	private List parentList;
 	private int myIndex;
 	
-	JPanel panel = new JPanel();
 	JTextField textField = new JTextField();
 	
 	public void setActivity(String isi, int xPosisi, int yPosisi, List listen) {
@@ -20,22 +19,21 @@ public class Activity {
 		this.y = yPosisi;
 		this.parentList = listen;
 		
-		panel.addMouseListener(new MouseAdapter() {
+		addMouseListener(new MouseAdapter() {
 			@Override
-			public void mouseClicked(MouseEvent e) {
-				System.out.println("yo");
-			}
 			public void mousePressed(MouseEvent e) {
-				System.out.println("i");
+				System.out.println(e);
+				System.out.println(e.getX() + " x ori y " + e.getY());
 			}
 			public void mouseReleased(MouseEvent e) {
 				//Move to target list
 				Point p = ((Component) e.getSource()).getLocation();
 			    e.translatePoint((int) p.getX(), (int) p.getY());
 			    Component tile = Main.frame.getContentPane().getComponentAt(e.getX(), e.getY());
+			    System.out.println(e);
 			    List target = (List)tile;
 			    System.out.println(myIndex);
-			    //parentList.outActivity(myIndex);
+			    parentList.outActivity(myIndex);
 			    target.inActivity(Activity.this);
 //				panel.setLocation(e.getX(), e.getY());
 //				setX(e.getX());
@@ -50,9 +48,9 @@ public class Activity {
 			}
 		});
 			
-		textField.setColumns(8);
-		panel.setBounds(xPosisi, yPosisi, width, height);
-		panel.add(textField);
+		textField.setColumns(10);
+		setBounds(xPosisi, yPosisi, width, height);
+		add(textField);
 	}
 	
 	public void setContent(String isi) {

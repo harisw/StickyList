@@ -6,8 +6,8 @@ public class List extends JPanel{
 	private String namaList;
 	private int x;
 	private int y;
-	private int width = 100;
-	private int height = 200;
+	private int width = 200;
+	private int height = 580;
 	private Activity[] child = new Activity[5];
 	private int currentIndex = 0;
 	
@@ -25,7 +25,7 @@ public class List extends JPanel{
 		button = new JButton("Add Activity");
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				Activity act = new Activity();				
+				Activity act = new Activity();
 				inActivity(act);
 				//System.out.println(activity[currentIndex].getParent().namaList);
 			}
@@ -34,7 +34,7 @@ public class List extends JPanel{
 		addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				System.out.println("yo");
+				System.out.println("yaa");
 			}
 			public void mousePressed(MouseEvent e) {
 				System.out.println("i");
@@ -56,8 +56,11 @@ public class List extends JPanel{
 			}
 		});
 		
+		label.setBounds(5, 0, 100, 40);
+		button.setBounds(5, 40, 190, 30);
+		setLayout(null);
 		setBounds(xPosisi, yPosisi, width, height);
-		setBackground(Color.WHITE);
+		setBackground(new Color(226, 228, 230));
 		add(label);
 		add(button);
 	}
@@ -100,21 +103,24 @@ public class List extends JPanel{
 	
 	public void outActivity(int index){
 		currentIndex--;
-		child[index] = null;
+		//child[index] = null;
+		remove(child[index]);
 		for(int i = index; i<currentIndex; i++) {
 			child[i] = child[i+1];
 			child[i].setIndex(i);
+			child[i].setActivity("", 10, 80+(i*30), null);
+			child[i].repaint();
 		}
 		child[currentIndex] = null;
 	}
 	
 	public void inActivity(Activity act){
 		child[currentIndex] = act;
-		act.setActivity("", 10, 60+(currentIndex*25), List.this);
+		act.setActivity("", 10, 80+(currentIndex*30), List.this);		
 		act.setIndex(currentIndex);
-		add(child[currentIndex].panel);
-		child[currentIndex].panel.revalidate();
-		child[currentIndex].panel.repaint();
+		add(child[currentIndex]);
+		child[currentIndex].revalidate();
+		child[currentIndex].repaint();
 		currentIndex++;
 	}
 }
