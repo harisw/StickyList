@@ -297,7 +297,7 @@ public class Main {
 					list[flag].setVisible(false);
 					list[flag] = null;
 					flag--;
-				}	
+				}
 			} else if(e.getSource() == btnConfirm){
 				//add new list
 				System.out.println("masuk btn confirm");

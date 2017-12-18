@@ -26,7 +26,6 @@ public class List extends JPanel{
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				Activity act = new Activity();
-				act.setActivity("", 10, 120+(currentIndex*40), List.this);
 				act.textField.setColumns(10);
 				inActivity(act);
 				//System.out.println(activity[currentIndex].getParent().namaList);
