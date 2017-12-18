@@ -10,7 +10,7 @@ public class Main {
 	private JFrame frame;
 	private JTextField textField;
 	private JButton btnNewList, btnDelList, btnConfirm, btnUndo, btnRedo, btnSave;
-	private JMenuItem jmUndo, jmRedo;
+	private JMenuItem jmUndo, jmRedo, jmExit;
 	private List[] list = new List[5];
 	private int flag = -1;
 	private int confirmCount = 0;
@@ -70,11 +70,16 @@ public class Main {
 		JMenu file = new JMenu("File");
 		file.setMnemonic(KeyEvent.VK_F);
 		menuBar.add(file);
-		JMenuItem exit = new JMenuItem("Exit", iconExit);
-		exit.setMnemonic(KeyEvent.VK_E);
-		exit.setToolTipText("Exit application");
-		file.add(exit);
-		exit.addActionListener((ActionEvent event) -> {
+		jmExit = new JMenuItem("Exit", iconExit);
+		jmExit.setMnemonic(KeyEvent.VK_E);
+		
+		KeyStroke keyStrokeToOpen = KeyStroke.getKeyStroke(KeyEvent.VK_E, KeyEvent.CTRL_DOWN_MASK);
+		jmExit.setAccelerator(keyStrokeToOpen);
+
+		jmExit.setToolTipText("Exit application");
+		file.add(jmExit);
+		jmExit.addActionListener((ActionEvent event) -> {
+			System.out.println("Exit...");
             System.exit(0);
         });
 		
@@ -98,11 +103,21 @@ public class Main {
 		jmUndo.addActionListener(buttonListener);		
 		jmRedo.addActionListener(buttonListener);
 		
-//		btnUndo.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
-//        .put(KeyStroke.getKeyStroke("ENTER"), "test");
-//		btnUndo.getActionMap().put("test", buttonListener);
-//		btnUndo.addActionListener(buttonListener);		
+		jmUndo.setMnemonic(KeyEvent.VK_Z);
+		KeyStroke keyStrokeToUndo = KeyStroke.getKeyStroke(KeyEvent.VK_Z, KeyEvent.CTRL_DOWN_MASK);
+		jmUndo.setAccelerator(keyStrokeToUndo);
+		jmUndo.setToolTipText("Undo");
+		edit.add(jmUndo);
+		jmUndo.addActionListener(buttonListener);
 		
+		jmRedo.setMnemonic(KeyEvent.VK_Y);
+		KeyStroke keyStrokeToRedo = KeyStroke.getKeyStroke(KeyEvent.VK_Y, KeyEvent.CTRL_DOWN_MASK);
+		jmRedo.setAccelerator(keyStrokeToRedo);
+		jmRedo.setToolTipText("Redo");
+		edit.add(jmRedo);
+		jmRedo.addActionListener(buttonListener);
+
+				
 		//help - about
 		ImageIcon iconAbout = new ImageIcon(ClassLoader.getSystemResource("images/logo.png"));
 		Image imageAbout = iconAbout.getImage();
@@ -289,9 +304,7 @@ public class Main {
 				textField.setVisible(true);
 				btnConfirm.setVisible(true);
 				textField.requestFocus();
-			}	
-
-			
+			}
 		}
 		
 		@Override
