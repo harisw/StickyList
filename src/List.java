@@ -117,9 +117,9 @@ public class List extends JPanel{
 		child[currentIndex] = act;
 		act.setActivity("", 10, 80+(currentIndex*30), List.this);
 		act.setIndex(currentIndex);
-		add(child[currentIndex].panel);
-		child[currentIndex].panel.revalidate();
-		child[currentIndex].panel.repaint();
+		add(child[currentIndex]);
+		child[currentIndex].revalidate();
+		child[currentIndex].repaint();
 		currentIndex++;
 	}
 }
