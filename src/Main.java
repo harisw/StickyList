@@ -261,30 +261,6 @@ public class Main {
 				flag++;
 				System.out.println("ini flag" + flag);
 				list[flag] = new List();
-				list[flag].addMouseListener(new MouseAdapter() {
-					@Override
-					public void mouseClicked(MouseEvent e) {
-						System.out.println("yo");
-					}
-					public void mousePressed(MouseEvent e) {
-						System.out.println("i");
-					}
-					public void mouseReleased(MouseEvent e) {
-						//System.out.println(List.this);
-						Point p = ((Component) e.getSource()).getLocation();
-					    e.translatePoint((int) p.getX(), (int) p.getY());
-						list[flag].setLocation(e.getX(), e.getY());
-						list[flag].setX(e.getX());
-						list[flag].setY(e.getY());
-					    //list[flag].setVisible(false);
-					    //Main.repaintComponents(e.getX(), e.getY());
-					   
-						System.out.println(list[flag]);
-					}
-					public void mouseDragged(MouseEvent e) {
-						System.out.println("man");
-					}
-				});
 				String txt = textField.getText();
 				list[flag].setList(txt, 30+(flag*130), 64);
 				frame.getContentPane().add(list[flag]);

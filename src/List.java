@@ -33,6 +33,31 @@ public class List extends JPanel{
 			}
 		});
 		
+		addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				System.out.println("yo");
+			}
+			public void mousePressed(MouseEvent e) {
+				System.out.println("i");
+			}
+			public void mouseReleased(MouseEvent e) {
+				//System.out.println(List.this);
+				Point p = ((Component) e.getSource()).getLocation();
+			    e.translatePoint((int) p.getX(), (int) p.getY());
+				setLocation(e.getX(), e.getY());
+				setX(e.getX());
+				setY(e.getY());
+			    //list[flag].setVisible(false);
+			    //Main.repaintComponents(e.getX(), e.getY());
+			   
+				System.out.println("ahah");
+			}
+			public void mouseDragged(MouseEvent e) {
+				System.out.println("man");
+			}
+		});
+		
 		setBounds(xPosisi, yPosisi, width, height);
 		setBackground(Color.WHITE);
 		add(label);
