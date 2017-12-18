@@ -5,7 +5,7 @@ import javax.swing.*;
 public class Main {
 
 	private JMenuBar menuBar;
-	private JFrame frame;
+	public static JFrame frame;
 	private JTextField textField;
 	private JButton btnNewList, btnDelList, btnConfirm, btnUndo, btnRedo, btnSave;
 	private List[] list = new List[5];

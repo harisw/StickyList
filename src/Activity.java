@@ -29,23 +29,29 @@ public class Activity {
 				System.out.println("i");
 			}
 			public void mouseReleased(MouseEvent e) {
-				//System.out.println(List.this);
+				//Move to target list
 				Point p = ((Component) e.getSource()).getLocation();
 			    e.translatePoint((int) p.getX(), (int) p.getY());
-				panel.setLocation(e.getX(), e.getY());
-				setX(e.getX());
-				setY(e.getY());
+			    Component tile = Main.frame.getContentPane().getComponentAt(e.getX(), e.getY());
+			    List target = (List)tile;
+			    System.out.println(myIndex);
+			    //parentList.outActivity(myIndex);
+			    target.inActivity(Activity.this);
+//				panel.setLocation(e.getX(), e.getY());
+//				setX(e.getX());
+//				setY(e.getY());
 			    //list[flag].setVisible(false);
 			    //Main.repaintComponents(e.getX(), e.getY());
 			   
-				System.out.println("syip");
+				//System.out.println(target.getNamaList());
 			}
 			public void mouseDragged(MouseEvent e) {
 				System.out.println("man");
 			}
 		});
 			
-		textField.setBounds(xPosisi, yPosisi, width, height);
+		textField.setColumns(8);
+		panel.setBounds(xPosisi, yPosisi, width, height);
 		panel.add(textField);
 	}
 	
