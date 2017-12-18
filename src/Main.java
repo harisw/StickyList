@@ -2,6 +2,10 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
+
 public class Main {
 
 	private JMenuBar menuBar;
@@ -76,6 +80,8 @@ public class Main {
 //				l.saveChild();
 			}
 		});
+		saveWorkspace.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK));
+		
 		JMenuItem loadWorkSpace = new JMenuItem("Load WorkSpace");
 		file.add(loadWorkSpace);
 		loadWorkSpace.addActionListener((ActionEvent event) -> {
@@ -96,6 +102,8 @@ public class Main {
 				list[flag].repaint();
 			}
 		});
+		loadWorkSpace.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_L, ActionEvent.CTRL_MASK));
+		
 		JMenuItem exit = new JMenuItem("Exit", iconExit);
 		exit.setMnemonic(KeyEvent.VK_E);
 		exit.setToolTipText("Exit application");
