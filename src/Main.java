@@ -8,7 +8,7 @@ public class Main {
 	private JFrame frame;
 	private JTextField textField;
 	private JButton btnNewList, btnDelList, btnConfirm, btnUndo, btnRedo, btnSave;
-	private List[] list = new List[5];
+	private List[] list = new List[10];
 	private int currentId = 1;
 	private int flag = -1;
 	private int confirmCount = 0;
@@ -67,13 +67,6 @@ public class Main {
 		JMenu file = new JMenu("File");
 		file.setMnemonic(KeyEvent.VK_F);
 		menuBar.add(file);
-		JMenuItem exit = new JMenuItem("Exit", iconExit);
-		exit.setMnemonic(KeyEvent.VK_E);
-		exit.setToolTipText("Exit application");
-		file.add(exit);
-		exit.addActionListener((ActionEvent event) -> {
-            System.exit(0);
-        });
 		JMenuItem saveWorkspace = new JMenuItem("Save WorkSpace");
 		file.add(saveWorkspace);
 		saveWorkspace.addActionListener((ActionEvent event) -> {
@@ -83,6 +76,33 @@ public class Main {
 //				l.saveChild();
 			}
 		});
+		JMenuItem loadWorkSpace = new JMenuItem("Load WorkSpace");
+		file.add(loadWorkSpace);
+		loadWorkSpace.addActionListener((ActionEvent event) -> {
+			List[] loadedList = ListModel.getAll();
+			System.out.println(loadedList.length);
+			for(List l: loadedList)
+			{
+				flag++;
+//				String txt = l.getNamaList();
+//				System.out.println(l.getNamaList());
+				list[flag] = new List();
+				String txt = l.getNamaList();
+				list[flag].setList(txt, 30+(flag*130), 64);
+				frame.getContentPane().add(list[flag]);
+				list[flag].setId(l.getId()); 
+				currentId++;
+				list[flag].revalidate();
+				list[flag].repaint();
+			}
+		});
+		JMenuItem exit = new JMenuItem("Exit", iconExit);
+		exit.setMnemonic(KeyEvent.VK_E);
+		exit.setToolTipText("Exit application");
+		file.add(exit);
+		exit.addActionListener((ActionEvent event) -> {
+            System.exit(0);
+        });
 		
 		//edit - undo - redo
 		ImageIcon iconUndo = new ImageIcon(ClassLoader.getSystemResource("images/undo.png"));
