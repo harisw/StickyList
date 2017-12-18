@@ -11,7 +11,6 @@ public class Main {
 	private List[] list = new List[5];
 	private int flag = -1;
 	private int confirmCount = 0;
-	private int newConfirmCount;
 	Caretaker caretaker = new Caretaker();
 	Originator originator = new Originator();
 	int saveFiles = 0, currentArticle = 0;
@@ -74,6 +73,14 @@ public class Main {
 		exit.addActionListener((ActionEvent event) -> {
             System.exit(0);
         });
+		JMenuItem saveWorkspace = new JMenuItem("Save WorkSpace");
+		file.add(saveWorkspace);
+		saveWorkspace.addActionListener((ActionEvent event) -> {
+			for(List l: list)
+			{
+				ListModel.insert(l);
+			}
+		});
 		
 		//edit - undo - redo
 		ImageIcon iconUndo = new ImageIcon(ClassLoader.getSystemResource("images/undo.png"));
