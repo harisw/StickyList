@@ -8,4 +8,8 @@ public class Memento {
 	public String getSavedArticle() { 
 		return article; 
 	}
+	
+	public String setNull() {
+		return null;
+	}
 }

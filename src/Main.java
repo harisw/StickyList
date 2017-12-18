@@ -1,5 +1,7 @@
 import java.awt.*;
 import java.awt.event.*;
+import java.beans.PropertyChangeListener;
+
 import javax.swing.*;
 
 public class Main {
@@ -8,6 +10,7 @@ public class Main {
 	private JFrame frame;
 	private JTextField textField;
 	private JButton btnNewList, btnDelList, btnConfirm, btnUndo, btnRedo, btnSave;
+	private JMenuItem jmUndo, jmRedo;
 	private List[] list = new List[5];
 	private int flag = -1;
 	private int confirmCount = 0;
@@ -85,13 +88,20 @@ public class Main {
 		Image imageRedo = iconRedo.getImage();
 		Image newImgRedo = imageRedo.getScaledInstance(20, 20, java.awt.Image.SCALE_SMOOTH); 
 	    iconRedo = new ImageIcon(newImgRedo);
-		
+	    
 		JMenu edit = new JMenu("Edit");
 		menuBar.add(edit);
-		JMenuItem undo = new JMenuItem("Undo", iconUndo);
-		JMenuItem redo = new JMenuItem("Redo", iconRedo);
-		edit.add(undo);
-		edit.add(redo);
+		jmUndo = new JMenuItem("Undo", iconUndo);
+		jmRedo = new JMenuItem("Redo", iconRedo);
+		edit.add(jmUndo);
+		edit.add(jmRedo);
+		jmUndo.addActionListener(buttonListener);		
+		jmRedo.addActionListener(buttonListener);
+		
+//		btnUndo.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
+//        .put(KeyStroke.getKeyStroke("ENTER"), "test");
+//		btnUndo.getActionMap().put("test", buttonListener);
+//		btnUndo.addActionListener(buttonListener);		
 		
 		//help - about
 		ImageIcon iconAbout = new ImageIcon(ClassLoader.getSystemResource("images/logo.png"));
@@ -164,35 +174,31 @@ public class Main {
 		
 		btnRedo = new JButton("Redo");
 		panel_2.add(btnRedo);
+		btnRedo.setEnabled(false);
 		
 		btnUndo = new JButton("Undo");
 		panel_2.add(btnUndo);
+		btnUndo.setEnabled(false);
 
 		/*button confirm button new list*/
-		
-		ButtonListener saveListener = new ButtonListener();
-		ButtonListener undoListener = new ButtonListener();
-		ButtonListener redoListener = new ButtonListener();
-		ButtonListener newListener = new ButtonListener();
-		ButtonListener delListener = new ButtonListener();
-		ButtonListener confListener = new ButtonListener();
-		
-		btnUndo.setVisible(true);
-		btnUndo.addActionListener(undoListener);
-		btnRedo.setVisible(true);
-		btnRedo.addActionListener(redoListener);
+				
+		btnUndo.addActionListener(buttonListener);
+		btnRedo.addActionListener(buttonListener);
 		btnSave.setVisible(true);
-		btnSave.addActionListener(saveListener);
-		btnDelList.addActionListener(delListener);
-		btnNewList.addActionListener(newListener);
-		btnConfirm.addActionListener(confListener);
+		btnSave.addActionListener(buttonListener);
+		btnDelList.addActionListener(buttonListener);
+		btnNewList.addActionListener(buttonListener);
+		btnConfirm.addActionListener(buttonListener);
 		
 		btnConfirm.setVisible(false);
 		textField.setVisible(false);
 	}
 	
-	class ButtonListener implements ActionListener {
+	Action buttonListener = new Action() {
+		
+		@Override
 		public void actionPerformed(ActionEvent e) {
+			// TODO Auto-generated method stub
 			System.out.println("Button pressed is " +e);
 			if(e.getSource() == btnSave){
 				// Get text in JTextField
@@ -214,7 +220,7 @@ public class Main {
 				// Make undo clickable
 				btnUndo.setEnabled(true);
 				
-			} else if(e.getSource() == btnUndo){
+			} else if(e.getSource() == btnUndo || e.getSource()== jmUndo){
 				if(currentArticle >= 1){
 					
 					// Decrement to the current article displayed
@@ -231,7 +237,7 @@ public class Main {
 					btnUndo.setEnabled(false);
 				}
 				
-			} else if(e.getSource() == btnRedo){
+			} else if(e.getSource() == btnRedo || e.getSource() == jmRedo){
 					if((saveFiles - 1) > currentArticle){
 						
 						// Increment to the current article displayed
@@ -269,14 +275,59 @@ public class Main {
 				
 				textField.setVisible(false);
 				btnConfirm.setVisible(false);
+				btnUndo.setEnabled(false);
+				btnRedo.setEnabled(false);
 				textField.setText("");
-				//frame.pack();	
+				
+				String textInTextArea = textField.getText();
+				originator.set(textInTextArea);
+				caretaker.setNull(originator.storeInMemento());
+				currentArticle = 0;
+				saveFiles = 0;				
 			} else if(e.getSource() == btnNewList){
 				System.out.println("masuk");
 				textField.setVisible(true);
 				btnConfirm.setVisible(true);
 				textField.requestFocus();
 			}	
-		}	
-	}
+
+			
+		}
+		
+		@Override
+		public void setEnabled(boolean b) {
+			// TODO Auto-generated method stub
+			
+		}
+		
+		@Override
+		public void removePropertyChangeListener(PropertyChangeListener listener) {
+			// TODO Auto-generated method stub
+			
+		}
+		
+		@Override
+		public void putValue(String key, Object value) {
+			// TODO Auto-generated method stub
+			
+		}
+		
+		@Override
+		public boolean isEnabled() {
+			// TODO Auto-generated method stub
+			return false;
+		}
+		
+		@Override
+		public Object getValue(String key) {
+			// TODO Auto-generated method stub
+			return null;
+		}
+		
+		@Override
+		public void addPropertyChangeListener(PropertyChangeListener listener) {
+			// TODO Auto-generated method stub
+			
+		}
+	};
 }
