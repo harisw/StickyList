@@ -6,8 +6,8 @@ public class List extends JPanel{
 	private String namaList;
 	private int x;
 	private int y;
-	private int width = 100;
-	private int height = 200;
+	private int width = 200;
+	private int height = 580;
 	private Activity[] child = new Activity[5];
 	private int currentIndex = 0;
 	
@@ -25,7 +25,9 @@ public class List extends JPanel{
 		button = new JButton("Add Activity");
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				Activity act = new Activity();				
+				Activity act = new Activity();
+				act.setActivity("", 10, 100+(currentIndex*30), List.this);
+				act.textField.setColumns(10);
 				inActivity(act);
 				//System.out.println(activity[currentIndex].getParent().namaList);
 			}
@@ -56,8 +58,11 @@ public class List extends JPanel{
 			}
 		});
 		
+		label.setBounds(5, 0, 100, 40);
+		button.setBounds(5, 40, 190, 30);
+		setLayout(null);
 		setBounds(xPosisi, yPosisi, width, height);
-		setBackground(Color.WHITE);
+		setBackground(new Color(226, 228, 230));
 		add(label);
 		add(button);
 	}

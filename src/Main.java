@@ -24,10 +24,11 @@ public class Main {
 	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
+			@Override
 			public void run() {
 				try {
 					Main window = new Main();
-					window.frame.setVisible(true);
+					Main.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -47,14 +48,15 @@ public class Main {
 	 */
 	private void initialize() {
 		frame = new JFrame();
-		frame.getContentPane().setBackground(new Color(153, 204, 153));
+		frame.getContentPane().setBackground(new Color(75, 191, 107));
 		
-		frame.setSize(800, 600);
+		frame.setSize(1366, 768);
 		frame.setTitle("Sticky List");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		frame.setLocationRelativeTo(null);
 		frame.setIconImage(new ImageIcon(ClassLoader.getSystemResource("images/logo.png")).getImage());
+		frame.setExtendedState(Frame.MAXIMIZED_BOTH );
 		//frame.setLayout(new BorderLayout());
 		
 		/*create menu bar*/
@@ -73,7 +75,7 @@ public class Main {
 		jmExit = new JMenuItem("Exit", iconExit);
 		jmExit.setMnemonic(KeyEvent.VK_E);
 		
-		KeyStroke keyStrokeToOpen = KeyStroke.getKeyStroke(KeyEvent.VK_E, KeyEvent.CTRL_DOWN_MASK);
+		KeyStroke keyStrokeToOpen = KeyStroke.getKeyStroke(KeyEvent.VK_E, InputEvent.CTRL_DOWN_MASK);
 		jmExit.setAccelerator(keyStrokeToOpen);
 
 		jmExit.setToolTipText("Exit application");
@@ -104,14 +106,14 @@ public class Main {
 		jmRedo.addActionListener(buttonListener);
 		
 		jmUndo.setMnemonic(KeyEvent.VK_Z);
-		KeyStroke keyStrokeToUndo = KeyStroke.getKeyStroke(KeyEvent.VK_Z, KeyEvent.CTRL_DOWN_MASK);
+		KeyStroke keyStrokeToUndo = KeyStroke.getKeyStroke(KeyEvent.VK_Z, InputEvent.CTRL_DOWN_MASK);
 		jmUndo.setAccelerator(keyStrokeToUndo);
 		jmUndo.setToolTipText("Undo");
 		edit.add(jmUndo);
 		jmUndo.addActionListener(buttonListener);
 		
 		jmRedo.setMnemonic(KeyEvent.VK_Y);
-		KeyStroke keyStrokeToRedo = KeyStroke.getKeyStroke(KeyEvent.VK_Y, KeyEvent.CTRL_DOWN_MASK);
+		KeyStroke keyStrokeToRedo = KeyStroke.getKeyStroke(KeyEvent.VK_Y, InputEvent.CTRL_DOWN_MASK);
 		jmRedo.setAccelerator(keyStrokeToRedo);
 		jmRedo.setToolTipText("Redo");
 		edit.add(jmRedo);
@@ -130,22 +132,76 @@ public class Main {
 		help.add(about);
 		/*end of create menu bar*/
 		
-		JPanel panel = new JPanel();
-		panel.setBackground(new Color(102, 153, 153));
-		panel.setBounds(0, 0, 138, 43);
-		frame.getContentPane().add(panel);
-		btnNewList = new JButton("New List");
-		panel.add(btnNewList);
+		JPanel panel_2 = new JPanel();
+		panel_2.setBackground(new Color(64, 163, 91));
+		panel_2.setBounds(0, 0, 1371, 43);
+		frame.getContentPane().add(panel_2);
+		panel_2.setLayout(null);
 		
-		JPanel panel_1 = new JPanel();
-		panel_1.setBackground(new Color(102, 153, 153));
-		panel_1.setBounds(129, 0, 213, 43);
-		frame.getContentPane().add(panel_1);
+		btnNewList = new JButton("New List");
+		btnNewList.setBounds(10, 11, 94, 23);
+		//frame.getContentPane().add(panel_2);
+		panel_2.add(btnNewList);
 		
 		textField = new JTextField();
-		panel_1.add(textField);
+		textField.setBounds(114, 12, 113, 20);
+		panel_2.add(textField);
 		textField.setColumns(10);
+		
+		btnConfirm = new JButton("Confirm");
+		btnConfirm.setBounds(237, 11, 88, 23);
+		panel_2.add(btnConfirm);
+		
+		btnUndo = new JButton("Undo");
+		btnUndo.setBounds(1256, 11, 70, 23);
+		panel_2.add(btnUndo);
+		
+		btnRedo = new JButton("Redo");
+		btnRedo.setBounds(1166, 11, 80, 23);
+		panel_2.add(btnRedo);
+		
+		btnSave = new JButton("Save");
+		btnSave.setBounds(1084, 11, 72, 23);
+		panel_2.add(btnSave);
+
+		/*button confirm button new list*/
+		
+		/*ButtonListener saveListener = new ButtonListener();
+		ButtonListener undoListener = new ButtonListener();
+		ButtonListener redoListener = new ButtonListener();
+		ButtonListener newListener = new ButtonListener();
+		ButtonListener delListener = new ButtonListener();
+		ButtonListener confListener = new ButtonListener();*/
+		
+		btnDelList = new JButton("Delete List");
+		btnDelList.setBounds(967, 11, 107, 23);
+		panel_2.add(btnDelList);
+		//btnDelList.addActionListener(delListener);
+		
+		btnSave.setVisible(true);
+		//btnSave.addActionListener(saveListener);
+		
+		btnRedo.setVisible(true);
+		//btnRedo.addActionListener(redoListener);
+		
+		btnUndo.setVisible(true);
+		//btnUndo.addActionListener(undoListener);
+		
+		//btnConfirm.addActionListener(confListener);
+		btnConfirm.setVisible(false);
+		
+		btnUndo.addActionListener(buttonListener);
+		btnRedo.addActionListener(buttonListener);
+		btnSave.setVisible(true);
+		btnSave.addActionListener(buttonListener);
+		btnDelList.addActionListener(buttonListener);
+		btnNewList.addActionListener(buttonListener);
+		btnConfirm.addActionListener(buttonListener);
+		
+		//textField = new JTextField();
+		//textField.setColumns(10);
 		textField.addKeyListener(new KeyAdapter() {
+			@Override
 			public void keyReleased(KeyEvent e) {
 				JTextField aTextField = (JTextField)e.getSource();
 				String word = aTextField.getText();
@@ -171,42 +227,8 @@ public class Main {
 				System.out.println("Char Entered: " + charCount);
 			}
 		});
-		
-		
-		btnConfirm = new JButton("Confirm");
-		panel_1.add(btnConfirm);
-		
-		JPanel panel_2 = new JPanel();
-		panel_2.setBackground(new Color(102, 153, 153));
-		panel_2.setBounds(333, 0, 451, 43);
-		frame.getContentPane().add(panel_2);
-		
-		btnDelList = new JButton("Delete List");
-		panel_2.add(btnDelList);
-		
-		btnSave = new JButton("Save");
-		panel_2.add(btnSave);
-		
-		btnRedo = new JButton("Redo");
-		panel_2.add(btnRedo);
-		btnRedo.setEnabled(false);
-		
-		btnUndo = new JButton("Undo");
-		panel_2.add(btnUndo);
-		btnUndo.setEnabled(false);
-
-		/*button confirm button new list*/
-				
-		btnUndo.addActionListener(buttonListener);
-		btnRedo.addActionListener(buttonListener);
-		btnSave.setVisible(true);
-		btnSave.addActionListener(buttonListener);
-		btnDelList.addActionListener(buttonListener);
-		btnNewList.addActionListener(buttonListener);
-		btnConfirm.addActionListener(buttonListener);
-		
-		btnConfirm.setVisible(false);
 		textField.setVisible(false);
+		//btnNewList.addActionListener(newListener);
 	}
 	
 	Action buttonListener = new Action() {

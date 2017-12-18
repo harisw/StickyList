@@ -6,8 +6,8 @@ public class Activity {
 	private String content;
 	private int x;
 	private int y;
-	private int width = 80;
-	private int height = 20;
+	private int width = 182;
+	private int height = 25;
 	private List parentList;
 	private int myIndex;
 	
