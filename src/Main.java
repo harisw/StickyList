@@ -9,6 +9,7 @@ public class Main {
 	private JTextField textField;
 	private JButton btnNewList, btnDelList, btnConfirm, btnUndo, btnRedo, btnSave;
 	private List[] list = new List[5];
+	private int currentId = 1;
 	private int flag = -1;
 	private int confirmCount = 0;
 	Caretaker caretaker = new Caretaker();
@@ -79,6 +80,7 @@ public class Main {
 			for(List l: list)
 			{
 				ListModel.insert(l);
+//				l.saveChild();
 			}
 		});
 		
@@ -271,6 +273,8 @@ public class Main {
 				String txt = textField.getText();
 				list[flag].setList(txt, 30+(flag*130), 64);
 				frame.getContentPane().add(list[flag]);
+				list[flag].setId(currentId);
+				currentId++;
 				list[flag].revalidate();
 				list[flag].repaint();
 				

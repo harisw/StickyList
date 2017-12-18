@@ -1,3 +1,5 @@
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusAdapter;
 import javax.swing.*; 
 
 public class Activity {
@@ -8,6 +10,7 @@ public class Activity {
 	private int height = 20;
 	private List parentList;
 	private int myIndex;
+	private int myParentId;
 	
 	JTextField textField = new JTextField();
 	
@@ -18,7 +21,12 @@ public class Activity {
 		this.parentList = listen;
 			
 		textField.setBounds(xPosisi, yPosisi, width, height);
-		
+		textField.addFocusListener(new FocusAdapter() {
+			public void focusLost(FocusEvent e) {
+//				System.out.println(textField.getText());
+				setContent(textField.getText());
+			}
+		});
 	}
 	
 	public void setContent(String isi) {
@@ -71,5 +79,13 @@ public class Activity {
 	
 	public List getParent() {
 		return this.parentList;
+	}
+	
+	public void setParentId(int id) {
+		this.myParentId = id;
+	}
+	
+	public int getParentId() {
+		return this.myParentId;
 	}
 }
