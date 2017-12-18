@@ -26,7 +26,7 @@ public class List extends JPanel{
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				Activity act = new Activity();
-				act.setActivity("", 10, 100+(currentIndex*30), List.this);
+				act.setActivity("", 10, 120+(currentIndex*40), List.this);
 				act.textField.setColumns(10);
 				inActivity(act);
 				//System.out.println(activity[currentIndex].getParent().namaList);
@@ -36,7 +36,7 @@ public class List extends JPanel{
 		addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				System.out.println("yo");
+				System.out.println("yaa");
 			}
 			public void mousePressed(MouseEvent e) {
 				System.out.println("i");
@@ -115,7 +115,7 @@ public class List extends JPanel{
 	
 	public void inActivity(Activity act){
 		child[currentIndex] = act;
-		act.setActivity("", 10, 60+(currentIndex*25), List.this);
+		act.setActivity("", 10, 80+(currentIndex*30), List.this);
 		act.setIndex(currentIndex);
 		add(child[currentIndex].panel);
 		child[currentIndex].panel.revalidate();

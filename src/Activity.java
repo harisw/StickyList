@@ -23,7 +23,7 @@ public class Activity {
 		panel.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				System.out.println("yo");
+				System.out.println("yaa");
 			}
 			public void mousePressed(MouseEvent e) {
 				System.out.println("i");

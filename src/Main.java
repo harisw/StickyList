@@ -305,7 +305,7 @@ public class Main {
 				System.out.println("ini flag" + flag);
 				list[flag] = new List();
 				String txt = textField.getText();
-				list[flag].setList(txt, 30+(flag*130), 64);
+				list[flag].setList(txt, 30+(flag*220), 64);
 				frame.getContentPane().add(list[flag]);
 				list[flag].revalidate();
 				list[flag].repaint();
