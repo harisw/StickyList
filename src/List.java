@@ -25,11 +25,34 @@ public class List extends JPanel{
 		button = new JButton("Add Activity");
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				Activity act = new Activity();
-				act.setActivity("", 10, 60+(currentIndex*25), List.this);
-				act.textField.setColumns(8);
+				Activity act = new Activity();				
 				inActivity(act);
 				//System.out.println(activity[currentIndex].getParent().namaList);
+			}
+		});
+		
+		addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				System.out.println("yo");
+			}
+			public void mousePressed(MouseEvent e) {
+				System.out.println("i");
+			}
+			public void mouseReleased(MouseEvent e) {
+				//System.out.println(List.this);
+				Point p = ((Component) e.getSource()).getLocation();
+			    e.translatePoint((int) p.getX(), (int) p.getY());
+				setLocation(e.getX(), e.getY());
+				setX(e.getX());
+				setY(e.getY());
+			    //list[flag].setVisible(false);
+			    //Main.repaintComponents(e.getX(), e.getY());
+			   
+				System.out.println("ahah");
+			}
+			public void mouseDragged(MouseEvent e) {
+				System.out.println("man");
 			}
 		});
 		
@@ -76,21 +99,22 @@ public class List extends JPanel{
 	}
 	
 	public void outActivity(int index){
+		currentIndex--;
 		child[index] = null;
 		for(int i = index; i<currentIndex; i++) {
 			child[i] = child[i+1];
 			child[i].setIndex(i);
 		}
 		child[currentIndex] = null;
-		currentIndex--;
-		
 	}
 	
 	public void inActivity(Activity act){
 		child[currentIndex] = act;
-		add(child[currentIndex].textField);
-		child[currentIndex].textField.revalidate();
-		child[currentIndex].textField.repaint();
+		act.setActivity("", 10, 60+(currentIndex*25), List.this);
+		act.setIndex(currentIndex);
+		add(child[currentIndex].panel);
+		child[currentIndex].panel.revalidate();
+		child[currentIndex].panel.repaint();
 		currentIndex++;
 	}
 }
