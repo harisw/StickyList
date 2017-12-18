@@ -92,6 +92,7 @@ public class Main {
 		file.add(loadWorkSpace);
 		loadWorkSpace.addActionListener((ActionEvent event) -> {
 			clearWorkspace();
+			flagSave = true;
 			List[] loadedList = ListModel.getAll();
 			System.out.println(loadedList.length);
 			for(List l: loadedList)
@@ -108,6 +109,7 @@ public class Main {
 				list[flag].revalidate();
 				list[flag].repaint();
 			}
+			flag--;
 		});
 		loadWorkSpace.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_L, ActionEvent.CTRL_MASK));
 		
