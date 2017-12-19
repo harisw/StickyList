@@ -4,6 +4,10 @@ import java.beans.PropertyChangeListener;
 
 import javax.swing.*;
 
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
+
 public class Main {
 
 	private JMenuBar menuBar;
@@ -11,10 +15,11 @@ public class Main {
 	private JTextField textField;
 	private JButton btnNewList, btnDelList, btnConfirm, btnUndo, btnRedo, btnSave;
 	private JMenuItem jmUndo, jmRedo, jmExit;
-	private List[] list = new List[5];
+	private List[] list = new List[10];
+	private int currentId = 1;
 	private int flag = -1;
 	private int confirmCount = 0;
-	private int newConfirmCount;
+	private boolean flagSave = false;
 	Caretaker caretaker = new Caretaker();
 	Originator originator = new Originator();
 	int saveFiles = 0, currentArticle = 0;
@@ -72,6 +77,47 @@ public class Main {
 		JMenu file = new JMenu("File");
 		file.setMnemonic(KeyEvent.VK_F);
 		menuBar.add(file);
+		JMenuItem saveWorkspace = new JMenuItem("Save WorkSpace");
+		file.add(saveWorkspace);
+		saveWorkspace.addActionListener((ActionEvent event) -> {
+			if(flagSave)
+			{
+				ListModel.deleteAll();
+			}
+			for(List l: list)
+			{
+				ListModel.insert(l);
+//				l.saveChild();
+			}
+			flagSave = true;
+		});
+		saveWorkspace.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK));
+		
+		JMenuItem loadWorkSpace = new JMenuItem("Load WorkSpace");
+		file.add(loadWorkSpace);
+		loadWorkSpace.addActionListener((ActionEvent event) -> {
+			clearWorkspace();
+			flagSave = true;
+			List[] loadedList = ListModel.getAll();
+			System.out.println(loadedList.length);
+			for(List l: loadedList)
+			{
+				flag++;
+//				String txt = l.getNamaList();
+//				System.out.println(l.getNamaList());
+				list[flag] = new List();
+				String txt = l.getNamaList();
+				list[flag].setList(txt, 30+(flag*130), 64);
+				frame.getContentPane().add(list[flag]);
+				list[flag].setId(l.getId()); 
+				currentId++;
+				list[flag].revalidate();
+				list[flag].repaint();
+			}
+			flag--;
+		});
+		loadWorkSpace.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_L, ActionEvent.CTRL_MASK));
+		
 		jmExit = new JMenuItem("Exit", iconExit);
 		jmExit.setMnemonic(KeyEvent.VK_E);
 		
@@ -82,8 +128,8 @@ public class Main {
 		file.add(jmExit);
 		jmExit.addActionListener((ActionEvent event) -> {
 			System.out.println("Exit...");
-            System.exit(0);
-        });
+			System.exit(0);
+		});
 		
 		//edit - undo - redo
 		ImageIcon iconUndo = new ImageIcon(ClassLoader.getSystemResource("images/undo.png"));
@@ -166,12 +212,12 @@ public class Main {
 
 		/*button confirm button new list*/
 		
-		/*ButtonListener saveListener = new ButtonListener();
-		ButtonListener undoListener = new ButtonListener();
-		ButtonListener redoListener = new ButtonListener();
-		ButtonListener newListener = new ButtonListener();
-		ButtonListener delListener = new ButtonListener();
-		ButtonListener confListener = new ButtonListener();*/
+//		ButtonListener saveListener = new ButtonListener();
+//		ButtonListener undoListener = new ButtonListener();
+//		ButtonListener redoListener = new ButtonListener();
+//		ButtonListener newListener = new ButtonListener();
+//		ButtonListener delListener = new ButtonListener();
+//		ButtonListener confListener = new ButtonListener();
 		
 		btnDelList = new JButton("Delete List");
 		btnDelList.setBounds(967, 11, 107, 23);
@@ -230,10 +276,14 @@ public class Main {
 		textField.setVisible(false);
 		//btnNewList.addActionListener(newListener);
 	}
-	
+	private void clearWorkspace() {
+		while(flag > -1){
+			list[flag].setVisible(false);
+			list[flag] = null;
+			flag--;
+		}
+	}
 	Action buttonListener = new Action() {
-		
-		@Override
 		public void actionPerformed(ActionEvent e) {
 			// TODO Auto-generated method stub
 			System.out.println("Button pressed is " +e);
@@ -307,6 +357,8 @@ public class Main {
 				String txt = textField.getText();
 				list[flag].setList(txt, 30+(flag*220), 64);
 				frame.getContentPane().add(list[flag]);
+				list[flag].setId(currentId);
+				currentId++;
 				list[flag].revalidate();
 				list[flag].repaint();
 				

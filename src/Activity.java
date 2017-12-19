@@ -10,6 +10,7 @@ public class Activity {
 	private int height = 25;
 	private List parentList;
 	private int myIndex;
+	private int myParentId;
 	
 	JPanel panel = new JPanel();
 	JTextField textField = new JTextField();
@@ -19,7 +20,6 @@ public class Activity {
 		this.x = xPosisi;
 		this.y = yPosisi;
 		this.parentList = listen;
-		
 		panel.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -105,5 +105,13 @@ public class Activity {
 	
 	public List getParent() {
 		return this.parentList;
+	}
+	
+	public void setParentId(int id) {
+		this.myParentId = id;
+	}
+	
+	public int getParentId() {
+		return this.myParentId;
 	}
 }
