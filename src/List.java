@@ -14,6 +14,7 @@ public class List extends JPanel{
 	private int id;
 	private JLabel label;
 	private JButton button;
+	private JButton btnDelList;
 	//private JScrollPane scroll;
 	//private JTextField[] set = new JTextField[5];
 	
@@ -30,6 +31,16 @@ public class List extends JPanel{
 				act.textField.setColumns(10);
 				inActivity(act);
 				//System.out.println(activity[currentIndex].getParent().namaList);
+			}
+		});
+		
+		btnDelList = new JButton("x");
+		btnDelList.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				System.out.println("ini delete List");
+				Main.list[column].setVisible(false);
+				Main.list[column] = null;
+				Main.flag--;
 			}
 		});
 		
@@ -88,11 +99,16 @@ public class List extends JPanel{
 		
 		label.setBounds(5, 0, 100, 40);
 		button.setBounds(5, 40, 190, 30);
+		btnDelList.setBounds(160,3,40,20);
+		btnDelList.setFont(new Font("Arial", Font.PLAIN, 10));
+		btnDelList.setForeground(Color.WHITE);
+		btnDelList.setBackground(new Color(217, 83, 79));
 		setLayout(null);
 		setBounds(x, y, width, height);
 		setBackground(new Color(226, 228, 230));
 		add(label);
 		add(button);
+		add(btnDelList);
 	}
 	
 	public void setNamaList(String nama) {

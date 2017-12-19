@@ -15,9 +15,9 @@ public class Main {
 	private JTextField textField;
 	private JButton btnNewList, btnDelList, btnConfirm, btnUndo, btnRedo, btnSave;
 	private JMenuItem jmUndo, jmRedo, jmExit;
-	private List[] list = new List[10];
+	public static List[] list = new List[10];
 	private int currentId = 1;
-	private int flag = -1;
+	public static int flag = -1;
 	private int confirmCount = 0;
 	private boolean flagSave = false;
 	Caretaker caretaker = new Caretaker();
