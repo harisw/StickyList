@@ -10,6 +10,7 @@ public class Activity extends JPanel{
 	private int height = 25;
 	private List parentList;
 	private int myIndex;
+	private int myParentId;
 	
 	JTextField textField = new JTextField();
 	
@@ -18,7 +19,6 @@ public class Activity extends JPanel{
 		this.x = xPosisi;
 		this.y = yPosisi;
 		this.parentList = listen;
-		
 		addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -49,7 +49,7 @@ public class Activity extends JPanel{
 			}
 		});
 			
-		textField.setColumns(8);
+		textField.setColumns(10);
 		setBounds(xPosisi, yPosisi, width, height);
 		add(textField);
 	}
@@ -113,5 +113,14 @@ public class Activity extends JPanel{
 		this.y = 80 + (index*30);
 		//revalidate();
 		repaint();
+	}
+	
+	public void setParentId(int id) {
+		this.myParentId = id;
+	}
+	
+	public int getParentId() {
+		return this.myParentId;
+
 	}
 }

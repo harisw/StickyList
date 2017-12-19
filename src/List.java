@@ -11,7 +11,7 @@ public class List extends JPanel{
 	private int column;
 	private Activity[] child = new Activity[5];
 	private int currentIndex = 0;
-	
+	private int id;
 	private JLabel label;
 	private JButton button;
 	//private JScrollPane scroll;
@@ -72,7 +72,7 @@ public class List extends JPanel{
 					setX(30+(x*220));
 					setColumn(x);
 					setY(64);
-					Main.listAtIndex(x);
+					//Main.listAtIndex(x);
 			    }
 				/*if(target!=null) { 
 					target.setX(30+((x-1)*220));
@@ -138,6 +138,13 @@ public class List extends JPanel{
 		return this.height;
 	}
 	
+	public void setId(int id) {
+		this.id = id;
+	}
+	
+	public int getId() {
+		return this.id;
+	}
 	public void outActivity(int index){
 		currentIndex--;
 		//child[index] = null;
@@ -154,10 +161,20 @@ public class List extends JPanel{
 		child[currentIndex] = act;
 		act.setActivity("", 10, 80+(currentIndex*30), List.this);		
 		act.setIndex(currentIndex);
+		act.setParentId(id);
 		add(child[currentIndex]);
 		child[currentIndex].revalidate();
 		child[currentIndex].repaint();
 		currentIndex++;
 		repaint();
+	}
+	
+	public void saveChild() {
+		for(Activity c: child)
+		{
+			System.out.println("masukin Activity");
+			System.out.println(c.getContent());
+			//ActivityModel.insert(c);
+		}
 	}
 }
