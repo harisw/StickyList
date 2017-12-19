@@ -12,6 +12,7 @@ public class Activity extends JPanel{
 	private int myIndex;
 	private int myParentId;
 	
+	JButton btnDelAct;
 	JTextField textField = new JTextField();
 	
 	public void setActivity(String isi, int xPosisi, int yPosisi, List listen) {
@@ -48,10 +49,27 @@ public class Activity extends JPanel{
 				System.out.println("man");
 			}
 		});
-			
+		
+		btnDelAct = new JButton("x");
+		btnDelAct.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				System.out.println("ini delete activity");
+			}
+		});
+		
+		setBackground(new Color(255, 255, 255));
 		textField.setColumns(10);
+		textField.setBounds(2,3,135,20);
+		btnDelAct.setBounds(140,3,40,20);
+		btnDelAct.setFont(new Font("Arial", Font.PLAIN, 10));
+		btnDelAct.setForeground(Color.WHITE);
+		btnDelAct.setBackground(new Color(217, 83, 79));
+		setLayout(null);
+
 		setBounds(xPosisi, yPosisi, width, height);
 		add(textField);
+		add(btnDelAct);
+		
 	}
 	
 	public void setContent(String isi) {
