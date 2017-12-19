@@ -54,6 +54,8 @@ public class Activity extends JPanel{
 		btnDelAct.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				System.out.println("ini delete activity");
+				parentList.outActivity(myIndex);
+				
 			}
 		});
 		
