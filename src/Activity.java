@@ -34,7 +34,7 @@ public class Activity extends JPanel{
 			    Component tile = Main.frame.getContentPane().getComponentAt(e.getX(), e.getY());
 			    List target = (List)tile;
 			    System.out.println(myIndex);
-			    //parentList.outActivity(myIndex);
+			    parentList.outActivity(myIndex);
 			    target.inActivity(Activity.this);
 //				panel.setLocation(e.getX(), e.getY());
 //				setX(e.getX());
@@ -59,7 +59,7 @@ public class Activity extends JPanel{
 	}
 	
 	public String getContent() {
-		return this.content;
+		return this.textField.getText();
 	}
 	
 	public void setX(int x) {
@@ -104,5 +104,14 @@ public class Activity extends JPanel{
 	
 	public List getParent() {
 		return this.parentList;
+	}
+	
+	public void update(int index) {
+		this.myIndex = index;
+		setLocation(x, 80 + (index*30));
+		this.x = x;
+		this.y = 80 + (index*30);
+		//revalidate();
+		repaint();
 	}
 }

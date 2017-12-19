@@ -5,9 +5,10 @@ import javax.swing.*;
 public class List extends JPanel{
 	private String namaList;
 	private int x;
-	private int y;
+	private int y = 64;
 	private int width = 200;
 	private int height = 580;
+	private int column;
 	private Activity[] child = new Activity[5];
 	private int currentIndex = 0;
 	
@@ -16,10 +17,10 @@ public class List extends JPanel{
 	//private JScrollPane scroll;
 	//private JTextField[] set = new JTextField[5];
 	
-	public void setList(String nama, int xPosisi, int yPosisi) {
+	public void setList(String nama, int xPosisi) {
 		namaList = nama;
-		x = xPosisi;
-		y = yPosisi;
+		column = xPosisi;
+		x = 30 + (column*220);
 				
 		label = new JLabel(nama);
 		button = new JButton("Add Activity");
@@ -62,20 +63,28 @@ public class List extends JPanel{
 				//System.out.println(List.this);
 				Point p = ((Component) e.getSource()).getLocation();
 			    e.translatePoint((int) p.getX(), (int) p.getY());
-				setLocation(e.getX(), 64);
-				setX(e.getX());
+//			    Component tile = Main.frame.getContentPane().getComponentAt(e.getX(), e.getY());
+//			    List target = (List)tile;
+			    int x = e.getX()/220;
+				setLocation(30+(x*220), 64);
+				setX(30+(x*220));
+				setColumn(x);
 				setY(64);
+				/*if(target!=null) { 
+					target.setX(30+((x-1)*220));
+					target.setY(64);
+				}*/
 			    //list[flag].setVisible(false);
 			    //Main.repaintComponents(e.getX(), e.getY());
 			   
-				System.out.println("ahah");
+				//System.out.println("ahah");
 			}
 		});
 		
 		label.setBounds(5, 0, 100, 40);
 		button.setBounds(5, 40, 190, 30);
 		setLayout(null);
-		setBounds(xPosisi, yPosisi, width, height);
+		setBounds(x, y, width, height);
 		setBackground(new Color(226, 228, 230));
 		add(label);
 		add(button);
@@ -105,6 +114,14 @@ public class List extends JPanel{
 		return this.y;
 	}
 	
+	public void setColumn(int col) {
+		this.column = col;
+	}
+	
+	public int getColumn() {
+		return this.column;
+	}
+	
 	public int getWidth() {
 		return this.width;
 	}
@@ -123,11 +140,12 @@ public class List extends JPanel{
 		remove(child[index]);
 		for(int i = index; i<currentIndex; i++) {
 			child[i] = child[i+1];
-			child[i].setIndex(i);
-			child[i].setActivity("", 10, 80+(i*30), null);
-			child[i].repaint();
+			System.out.println(child[i].getIndex());
+			child[i].update(i);
+			System.out.println(child[i].getIndex() + " new " + child[i]);
 		}
 		child[currentIndex] = null;
+		repaint();
 	}
 	
 	public void inActivity(Activity act){
@@ -138,5 +156,6 @@ public class List extends JPanel{
 		child[currentIndex].revalidate();
 		child[currentIndex].repaint();
 		currentIndex++;
+		repaint();
 	}
 }
