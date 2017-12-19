@@ -80,6 +80,7 @@ public class Main {
 		JMenuItem saveWorkspace = new JMenuItem("Save WorkSpace");
 		file.add(saveWorkspace);
 		saveWorkspace.addActionListener((ActionEvent event) -> {
+			ListModel.deleteAll();
 			if(flagSave)
 			{
 				ListModel.deleteAll();
