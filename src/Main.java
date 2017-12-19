@@ -1,30 +1,39 @@
 import java.awt.*;
 import java.awt.event.*;
+import java.beans.PropertyChangeListener;
+
 import javax.swing.*;
+
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
 
 public class Main {
 
 	private JMenuBar menuBar;
-	private JFrame frame;
+	public static JFrame frame;
 	private JTextField textField;
 	private JButton btnNewList, btnDelList, btnConfirm, btnUndo, btnRedo, btnSave;
-	private List[] list = new List[5];
-	private int flag = -1;
-	private int oldChar = 0;
-	private int newChar;
-   Caretaker caretaker = new Caretaker();
-   Originator originator = new Originator();
-   int saveFiles = 0, currentArticle = 0;
+	private JMenuItem jmUndo, jmRedo, jmExit;
+	public static List[] list = new List[10];
+	private int currentId = 1;
+	public static int flag = -1;
+	private int confirmCount = 0;
+	private boolean flagSave = false;
+	Caretaker caretaker = new Caretaker();
+	Originator originator = new Originator();
+	int saveFiles = 0, currentArticle = 0;
       
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
+			@Override
 			public void run() {
 				try {
 					Main window = new Main();
-					window.frame.setVisible(true);
+					Main.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -44,14 +53,15 @@ public class Main {
 	 */
 	private void initialize() {
 		frame = new JFrame();
-		frame.getContentPane().setBackground(new Color(153, 204, 153));
+		frame.getContentPane().setBackground(new Color(75, 191, 107));
 		
-		frame.setSize(800, 600);
+		frame.setSize(1366, 768);
 		frame.setTitle("Sticky List");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		frame.setLocationRelativeTo(null);
 		frame.setIconImage(new ImageIcon(ClassLoader.getSystemResource("images/logo.png")).getImage());
+		frame.setExtendedState(Frame.MAXIMIZED_BOTH );
 		//frame.setLayout(new BorderLayout());
 		
 		/*create menu bar*/
@@ -67,13 +77,59 @@ public class Main {
 		JMenu file = new JMenu("File");
 		file.setMnemonic(KeyEvent.VK_F);
 		menuBar.add(file);
-		JMenuItem exit = new JMenuItem("Exit", iconExit);
-		exit.setMnemonic(KeyEvent.VK_E);
-		exit.setToolTipText("Exit application");
-		file.add(exit);
-		exit.addActionListener((ActionEvent event) -> {
-            System.exit(0);
-        });
+		JMenuItem saveWorkspace = new JMenuItem("Save WorkSpace");
+		file.add(saveWorkspace);
+		saveWorkspace.addActionListener((ActionEvent event) -> {
+			if(flagSave)
+			{
+				ListModel.deleteAll();
+			}
+			for(List l: list)
+			{
+				ListModel.insert(l);
+//				l.saveChild();
+			}
+			flagSave = true;
+		});
+		saveWorkspace.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK));
+		
+		JMenuItem loadWorkSpace = new JMenuItem("Load WorkSpace");
+		file.add(loadWorkSpace);
+		loadWorkSpace.addActionListener((ActionEvent event) -> {
+			clearWorkspace();
+			flagSave = true;
+			List[] loadedList = ListModel.getAll();
+			System.out.println(loadedList.length);
+			for(List l: loadedList)
+			{
+				flag++;
+//				String txt = l.getNamaList();
+//				System.out.println(l.getNamaList());
+				list[flag] = new List();
+				String txt = l.getNamaList();
+				list[flag].setList(txt, 30+(flag*130));
+				frame.getContentPane().add(list[flag]);
+				list[flag].setId(l.getId()); 
+				currentId++;
+				list[flag].revalidate();
+				list[flag].repaint();
+			}
+			flag--;
+		});
+		loadWorkSpace.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_L, ActionEvent.CTRL_MASK));
+		
+		jmExit = new JMenuItem("Exit", iconExit);
+		jmExit.setMnemonic(KeyEvent.VK_E);
+		
+		KeyStroke keyStrokeToOpen = KeyStroke.getKeyStroke(KeyEvent.VK_E, InputEvent.CTRL_DOWN_MASK);
+		jmExit.setAccelerator(keyStrokeToOpen);
+
+		jmExit.setToolTipText("Exit application");
+		file.add(jmExit);
+		jmExit.addActionListener((ActionEvent event) -> {
+			System.out.println("Exit...");
+			System.exit(0);
+		});
 		
 		//edit - undo - redo
 		ImageIcon iconUndo = new ImageIcon(ClassLoader.getSystemResource("images/undo.png"));
@@ -85,14 +141,31 @@ public class Main {
 		Image imageRedo = iconRedo.getImage();
 		Image newImgRedo = imageRedo.getScaledInstance(20, 20, java.awt.Image.SCALE_SMOOTH); 
 	    iconRedo = new ImageIcon(newImgRedo);
-		
+	    
 		JMenu edit = new JMenu("Edit");
 		menuBar.add(edit);
-		JMenuItem undo = new JMenuItem("Undo", iconUndo);
-		JMenuItem redo = new JMenuItem("Redo", iconRedo);
-		edit.add(undo);
-		edit.add(redo);
+		jmUndo = new JMenuItem("Undo", iconUndo);
+		jmRedo = new JMenuItem("Redo", iconRedo);
+		edit.add(jmUndo);
+		edit.add(jmRedo);
+		jmUndo.addActionListener(buttonListener);		
+		jmRedo.addActionListener(buttonListener);
 		
+		jmUndo.setMnemonic(KeyEvent.VK_Z);
+		KeyStroke keyStrokeToUndo = KeyStroke.getKeyStroke(KeyEvent.VK_Z, InputEvent.CTRL_DOWN_MASK);
+		jmUndo.setAccelerator(keyStrokeToUndo);
+		jmUndo.setToolTipText("Undo");
+		edit.add(jmUndo);
+		jmUndo.addActionListener(buttonListener);
+		
+		jmRedo.setMnemonic(KeyEvent.VK_Y);
+		KeyStroke keyStrokeToRedo = KeyStroke.getKeyStroke(KeyEvent.VK_Y, InputEvent.CTRL_DOWN_MASK);
+		jmRedo.setAccelerator(keyStrokeToRedo);
+		jmRedo.setToolTipText("Redo");
+		edit.add(jmRedo);
+		jmRedo.addActionListener(buttonListener);
+
+				
 		//help - about
 		ImageIcon iconAbout = new ImageIcon(ClassLoader.getSystemResource("images/logo.png"));
 		Image imageAbout = iconAbout.getImage();
@@ -105,66 +178,115 @@ public class Main {
 		help.add(about);
 		/*end of create menu bar*/
 		
-		JPanel panel = new JPanel();
-		panel.setBackground(new Color(102, 153, 153));
-		panel.setBounds(0, 0, 138, 43);
-		frame.getContentPane().add(panel);
-		btnNewList = new JButton("New List");
-		panel.add(btnNewList);
+		JPanel panel_2 = new JPanel();
+		panel_2.setBackground(new Color(64, 163, 91));
+		panel_2.setBounds(0, 0, 1371, 43);
+		frame.getContentPane().add(panel_2);
+		panel_2.setLayout(null);
 		
-		JPanel panel_1 = new JPanel();
-		panel_1.setBackground(new Color(102, 153, 153));
-		panel_1.setBounds(129, 0, 213, 43);
-		frame.getContentPane().add(panel_1);
+		btnNewList = new JButton("New List");
+		btnNewList.setBounds(10, 11, 94, 23);
+		//frame.getContentPane().add(panel_2);
+		panel_2.add(btnNewList);
 		
 		textField = new JTextField();
-		panel_1.add(textField);
+		textField.setBounds(114, 12, 113, 20);
+		panel_2.add(textField);
 		textField.setColumns(10);
+		
 		btnConfirm = new JButton("Confirm");
-		panel_1.add(btnConfirm);
-		
-		JPanel panel_2 = new JPanel();
-		panel_2.setBackground(new Color(102, 153, 153));
-		panel_2.setBounds(333, 0, 451, 43);
-		frame.getContentPane().add(panel_2);
-		
-		btnDelList = new JButton("Delete List");
-		panel_2.add(btnDelList);
-		
-		btnSave = new JButton("Save");
-		panel_2.add(btnSave);
-		
-		btnRedo = new JButton("Redo");
-		panel_2.add(btnRedo);
+		btnConfirm.setBounds(237, 11, 88, 23);
+		panel_2.add(btnConfirm);
 		
 		btnUndo = new JButton("Undo");
+		btnUndo.setBounds(1256, 11, 70, 23);
 		panel_2.add(btnUndo);
 		
+		btnRedo = new JButton("Redo");
+		btnRedo.setBounds(1166, 11, 80, 23);
+		panel_2.add(btnRedo);
+		
+		btnSave = new JButton("Save");
+		btnSave.setBounds(1084, 11, 72, 23);
+		panel_2.add(btnSave);
+
 		/*button confirm button new list*/
 		
-		ButtonListener saveListener = new ButtonListener();
-		ButtonListener undoListener = new ButtonListener();
-		ButtonListener redoListener = new ButtonListener();
-		ButtonListener newListener = new ButtonListener();
-		ButtonListener delListener = new ButtonListener();
-		ButtonListener confListener = new ButtonListener();
+//		ButtonListener saveListener = new ButtonListener();
+//		ButtonListener undoListener = new ButtonListener();
+//		ButtonListener redoListener = new ButtonListener();
+//		ButtonListener newListener = new ButtonListener();
+//		ButtonListener delListener = new ButtonListener();
+//		ButtonListener confListener = new ButtonListener();
+		
+		btnDelList = new JButton("Delete List");
+		btnDelList.setBounds(967, 11, 107, 23);
+		panel_2.add(btnDelList);
+		//btnDelList.addActionListener(delListener);
+		
+		btnSave.setVisible(true);
+		//btnSave.addActionListener(saveListener);
+		
+		btnRedo.setVisible(true);
+		//btnRedo.addActionListener(redoListener);
 		
 		btnUndo.setVisible(true);
-		btnUndo.addActionListener(undoListener);
-		btnRedo.setVisible(true);
-		btnRedo.addActionListener(redoListener);
-		btnSave.setVisible(true);
-		btnSave.addActionListener(saveListener);
-		btnDelList.addActionListener(delListener);
-		btnNewList.addActionListener(newListener);
-		btnConfirm.addActionListener(confListener);
+		//btnUndo.addActionListener(undoListener);
 		
+		//btnConfirm.addActionListener(confListener);
 		btnConfirm.setVisible(false);
+		
+		btnUndo.addActionListener(buttonListener);
+		btnRedo.addActionListener(buttonListener);
+		btnSave.setVisible(true);
+		btnSave.addActionListener(buttonListener);
+		btnDelList.addActionListener(buttonListener);
+		btnNewList.addActionListener(buttonListener);
+		btnConfirm.addActionListener(buttonListener);
+		
+		//textField = new JTextField();
+		//textField.setColumns(10);
+		textField.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				JTextField aTextField = (JTextField)e.getSource();
+				String word = aTextField.getText();
+				int charCount = word.length();
+				if(Math.abs((confirmCount - charCount)) >= 1) {
+					confirmCount = charCount;
+					// Set the value for the current memento
+					originator.set(word);
+					
+					// Add new article to the ArrayList
+					caretaker.addMemento( originator.storeInMemento() );
+					
+					// saveFiles monitors how many articles are saved
+					// currentArticle monitors the current article displayed
+					
+					saveFiles++;
+					currentArticle++;
+					
+					System.out.println("Save Files " + saveFiles);
+					// Make undo clickable
+					btnUndo.setEnabled(true);
+				}
+				System.out.println("Char Entered: " + charCount);
+			}
+		});
 		textField.setVisible(false);
+		//btnNewList.addActionListener(newListener);
 	}
 	
-	class ButtonListener implements ActionListener {
+	private void clearWorkspace() {
+		while(flag > -1){
+			list[flag].setVisible(false);
+			list[flag] = null;
+			flag--;
+		}
+	}
+	Action buttonListener = new Action() {
 		public void actionPerformed(ActionEvent e) {
+			// TODO Auto-generated method stub
 			System.out.println("Button pressed is " +e);
 			if(e.getSource() == btnSave){
 				// Get text in JTextField
@@ -186,7 +308,7 @@ public class Main {
 				// Make undo clickable
 				btnUndo.setEnabled(true);
 				
-			} else if(e.getSource() == btnUndo){
+			} else if(e.getSource() == btnUndo || e.getSource()== jmUndo){
 				if(currentArticle >= 1){
 					
 					// Decrement to the current article displayed
@@ -203,7 +325,7 @@ public class Main {
 					btnUndo.setEnabled(false);
 				}
 				
-			} else if(e.getSource() == btnRedo){
+			} else if(e.getSource() == btnRedo || e.getSource() == jmRedo){
 					if((saveFiles - 1) > currentArticle){
 						
 						// Increment to the current article displayed
@@ -226,27 +348,82 @@ public class Main {
 					list[flag].setVisible(false);
 					list[flag] = null;
 					flag--;
-				}	
+				}
 			} else if(e.getSource() == btnConfirm){
 				//add new list
+				System.out.println("masuk btn confirm");
 				flag++;
+				System.out.println("ini flag" + flag);
 				list[flag] = new List();
 				String txt = textField.getText();
-				list[flag].setList(txt, 30+(flag*130), 64);
+				list[flag].setList(txt, flag);
 				frame.getContentPane().add(list[flag]);
+				list[flag].setId(currentId);
+				currentId++;
 				list[flag].revalidate();
 				list[flag].repaint();
 				
 				textField.setVisible(false);
 				btnConfirm.setVisible(false);
+				btnUndo.setEnabled(false);
+				btnRedo.setEnabled(false);
 				textField.setText("");
-				//frame.pack();	
+				
+				String textInTextArea = textField.getText();
+				originator.set(textInTextArea);
+				caretaker.setNull(originator.storeInMemento());
+				currentArticle = 0;
+				saveFiles = 0;				
 			} else if(e.getSource() == btnNewList){
 				System.out.println("masuk");
 				textField.setVisible(true);
 				btnConfirm.setVisible(true);
-				textField.requestFocus();	
-			}	
-		}	
-	}
+				textField.requestFocus();
+			}
+		}
+		
+		@Override
+		public void setEnabled(boolean b) {
+			// TODO Auto-generated method stub
+			
+		}
+		
+		@Override
+		public void removePropertyChangeListener(PropertyChangeListener listener) {
+			// TODO Auto-generated method stub
+			
+		}
+		
+		@Override
+		public void putValue(String key, Object value) {
+			// TODO Auto-generated method stub
+			
+		}
+		
+		@Override
+		public boolean isEnabled() {
+			// TODO Auto-generated method stub
+			return false;
+		}
+		
+		@Override
+		public Object getValue(String key) {
+			// TODO Auto-generated method stub
+			return null;
+		}
+		
+		@Override
+		public void addPropertyChangeListener(PropertyChangeListener listener) {
+			// TODO Auto-generated method stub
+			
+		}
+
+	};
+	
+	/*public List listAtIndex(int x) {
+		for(List listen : list) {
+			if(x <= listen.getX()+200 && listen.getX() <= x) return listen;
+			else return null;
+		}
+	}*/
 }

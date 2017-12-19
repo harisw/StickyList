@@ -5,40 +5,110 @@ import javax.swing.*;
 public class List extends JPanel{
 	private String namaList;
 	private int x;
-	private int y;
-	private int width = 100;
-	private int height = 200;
+	private int y = 64;
+	private int width = 200;
+	private int height = 580;
+	private int column;
 	private Activity[] child = new Activity[5];
 	private int currentIndex = 0;
-	
+	private int id;
 	private JLabel label;
 	private JButton button;
+	private JButton btnDelList;
 	//private JScrollPane scroll;
 	//private JTextField[] set = new JTextField[5];
 	
-	public void setList(String nama, int xPosisi, int yPosisi) {
+	public void setList(String nama, int xPosisi) {
 		namaList = nama;
-		x = xPosisi;
-		y = yPosisi;
+		column = xPosisi;
+		x = 30 + (column*220);
 				
 		label = new JLabel(nama);
 		button = new JButton("Add Activity");
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				Activity act = new Activity();
-				act.setActivity("", 10, 60+(currentIndex*25), List.this);
-				act.textField.setColumns(8);
+				act.textField.setColumns(10);
 				inActivity(act);
 				//System.out.println(activity[currentIndex].getParent().namaList);
 			}
 		});
 		
-		setBounds(xPosisi, yPosisi, width, height);
-		setBackground(Color.WHITE);
+		btnDelList = new JButton("x");
+		btnDelList.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				System.out.println("ini delete List");
+				Main.list[column].setVisible(false);
+				Main.list[column] = null;
+				Main.flag--;
+			}
+		});
+		
+		addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				System.out.println("yaa");
+			}
+			public void mousePressed(MouseEvent e) {
+				System.out.println("i");
+			}
+			public void mouseReleased(MouseEvent e) {
+//				//System.out.println(List.this);
+//				Point p = ((Component) e.getSource()).getLocation();
+//			    e.translatePoint((int) p.getX(), (int) p.getY());
+//				setLocation(e.getX(), e.getY());
+//				setX(e.getX());
+//				setY(e.getY());
+//			    //list[flag].setVisible(false);
+//			    //Main.repaintComponents(e.getX(), e.getY());
+//			   
+//				System.out.println("ahah");
+			}
+			public void mouseDragged(MouseEvent e) {
+				System.out.println("man");
+			}
+		});
+		
+		addMouseMotionListener(new MouseMotionAdapter() {
+			@Override
+			public void mouseDragged(MouseEvent e) {
+				//System.out.println(List.this);
+				Point p = ((Component) e.getSource()).getLocation();
+			    e.translatePoint((int) p.getX(), (int) p.getY());
+//			    Component tile = Main.frame.getContentPane().getComponentAt(e.getX(), e.getY());
+//			    List target = (List)tile;
+			    int x = e.getX()/220;
+			    if(x!=column)
+			    {
+					setLocation(30+(x*220), 64);
+					setX(30+(x*220));
+					setColumn(x);
+					setY(64);
+					//Main.listAtIndex(x);
+			    }
+				/*if(target!=null) { 
+					target.setX(30+((x-1)*220));
+					target.setY(64);
+				}*/
+			    //list[flag].setVisible(false);
+			    //Main.repaintComponents(e.getX(), e.getY());
+			   
+				//System.out.println("ahah");
+			}
+		});
+		
+		label.setBounds(5, 0, 100, 40);
+		button.setBounds(5, 40, 190, 30);
+		btnDelList.setBounds(160,3,40,20);
+		btnDelList.setFont(new Font("Arial", Font.PLAIN, 10));
+		btnDelList.setForeground(Color.WHITE);
+		btnDelList.setBackground(new Color(217, 83, 79));
+		setLayout(null);
+		setBounds(x, y, width, height);
+		setBackground(new Color(226, 228, 230));
 		add(label);
 		add(button);
-		
-		
+		add(btnDelList);
 	}
 	
 	public void setNamaList(String nama) {
@@ -65,6 +135,14 @@ public class List extends JPanel{
 		return this.y;
 	}
 	
+	public void setColumn(int col) {
+		this.column = col;
+	}
+	
+	public int getColumn() {
+		return this.column;
+	}
+	
 	public int getWidth() {
 		return this.width;
 	}
@@ -77,22 +155,43 @@ public class List extends JPanel{
 		return this.height;
 	}
 	
+	public void setId(int id) {
+		this.id = id;
+	}
+	
+	public int getId() {
+		return this.id;
+	}
 	public void outActivity(int index){
-		child[index] = null;
+		currentIndex--;
+		//child[index] = null;
+		remove(child[index]);
 		for(int i = index; i<currentIndex; i++) {
 			child[i] = child[i+1];
-			child[i].setIndex(i);
+			child[i].update(i);
 		}
 		child[currentIndex] = null;
-		currentIndex--;
-		
+		repaint();
 	}
 	
 	public void inActivity(Activity act){
 		child[currentIndex] = act;
-		add(child[currentIndex].textField);
-		child[currentIndex].textField.revalidate();
-		child[currentIndex].textField.repaint();
+		act.setActivity("", 10, 80+(currentIndex*30), List.this);		
+		act.setIndex(currentIndex);
+		act.setParentId(id);
+		add(child[currentIndex]);
+		child[currentIndex].revalidate();
+		child[currentIndex].repaint();
 		currentIndex++;
+		repaint();
+	}
+	
+	public void saveChild() {
+		for(Activity c: child)
+		{
+			System.out.println("masukin Activity");
+			System.out.println(c.getContent());
+			//ActivityModel.insert(c);
+		}
 	}
 }
