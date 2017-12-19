@@ -2,7 +2,7 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*; 
 
-public class Activity {
+public class Activity extends JPanel{
 	private String content;
 	private int x;
 	private int y;
@@ -12,7 +12,6 @@ public class Activity {
 	private int myIndex;
 	private int myParentId;
 	
-	JPanel panel = new JPanel();
 	JTextField textField = new JTextField();
 	
 	public void setActivity(String isi, int xPosisi, int yPosisi, List listen) {
@@ -20,7 +19,7 @@ public class Activity {
 		this.x = xPosisi;
 		this.y = yPosisi;
 		this.parentList = listen;
-		panel.addMouseListener(new MouseAdapter() {
+		addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				System.out.println("yaa");
@@ -51,8 +50,8 @@ public class Activity {
 		});
 			
 		textField.setColumns(8);
-		panel.setBounds(xPosisi, yPosisi, width, height);
-		panel.add(textField);
+		setBounds(xPosisi, yPosisi, width, height);
+		add(textField);
 	}
 	
 	public void setContent(String isi) {

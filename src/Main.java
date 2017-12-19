@@ -276,6 +276,7 @@ public class Main {
 		textField.setVisible(false);
 		//btnNewList.addActionListener(newListener);
 	}
+	
 	private void clearWorkspace() {
 		while(flag > -1){
 			list[flag].setVisible(false);
