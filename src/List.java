@@ -66,10 +66,14 @@ public class List extends JPanel{
 //			    Component tile = Main.frame.getContentPane().getComponentAt(e.getX(), e.getY());
 //			    List target = (List)tile;
 			    int x = e.getX()/220;
-				setLocation(30+(x*220), 64);
-				setX(30+(x*220));
-				setColumn(x);
-				setY(64);
+			    if(x!=column)
+			    {
+					setLocation(30+(x*220), 64);
+					setX(30+(x*220));
+					setColumn(x);
+					setY(64);
+					Main.listAtIndex(x);
+			    }
 				/*if(target!=null) { 
 					target.setX(30+((x-1)*220));
 					target.setY(64);
@@ -140,9 +144,7 @@ public class List extends JPanel{
 		remove(child[index]);
 		for(int i = index; i<currentIndex; i++) {
 			child[i] = child[i+1];
-			System.out.println(child[i].getIndex());
 			child[i].update(i);
-			System.out.println(child[i].getIndex() + " new " + child[i]);
 		}
 		child[currentIndex] = null;
 		repaint();

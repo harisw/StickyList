@@ -364,5 +364,14 @@ public class Main {
 			// TODO Auto-generated method stub
 			
 		}
+
 	};
+	
+	@Override
+	public List listAtIndex(int x) {
+		for(List listen : list) {
+			if(x <= listen.getX()+200 && listen.getX() <= x) return listen;
+			else return null;
+		}
+	}
 }
